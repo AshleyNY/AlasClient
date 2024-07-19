@@ -2,16 +2,16 @@
 
 + 目前已知问题：
 + 1，游戏外注入异常崩溃（已经修复）：
-+  异常点在于ClientInsance返回值为nullptr
-+  添加if（mc.GetClientInsance != nullptr）即可避免
+  异常点在于ClientInsance返回值为nullptr
+  添加if（mc.GetClientInsance != nullptr）即可避免
     
 + 2，Autocrystal崩溃（已经修复）
-+  异常点在于MovePackage函数异常，以authPackage替换使用即可
+  异常点在于MovePackage函数异常，以authPackage替换使用即可
 
 +  3，Killaura（已修复）
-+  不攻击mob
-+  TargetUtils有问题
+  不攻击mob
+  TargetUtils有问题
 
 + 4，imguihook（未修复）
-+ 不hook dx12
+ 不hook dx12
 + 5，拉窗口崩溃（已修复）

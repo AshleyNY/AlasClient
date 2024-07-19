@@ -8,6 +8,6 @@
 + 2，Autocrystal崩溃（已经修复）
 +  异常点在于MovePackage函数异常，以authPackage替换使用即可
 
-+  3，Killaura（未修复）
-+  Killaura存在问题：攻击自己
-+  目测原因是TargetUtils有问题
++  3，Killaura（已修复）
++  不攻击mob
++  TargetUtils有问题

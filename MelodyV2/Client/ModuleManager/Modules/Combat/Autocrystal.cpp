@@ -79,7 +79,7 @@ void AutoCrystal::onDisable() {
 bool AutoCrystal::canPlaceCrystal(Vec3<int> placePos) {
 	auto* lp = mc.getLocalPlayer();
 	auto* region = lp->dimension->blockSource;
-
+	//sb
 	auto isAir = [](Block* b) { return b && b->blockLegacy->blockName == "air"; };
 	auto isObsidianOrBedrock = [](Block* b) { return b && (b->blockLegacy->blockName == "obsidian" || b->blockLegacy->blockName == "bedrock"); };
 

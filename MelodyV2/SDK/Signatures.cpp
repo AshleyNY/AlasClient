@@ -90,6 +90,7 @@ DEFINE(Sigs::hook::MobJumpFromGroundSystemImpl_mobJumpFromGroundHook, "48 89 5C 
 DEFINE(Sigs::vtable::PlayerVtable, "48 8D 05 ? ? ? ? 48 89 01 B8 ? ? ? ? 8D 50 FA 44 8D 48 ? 44 8D 40 ? 66 89 44 ? ? E8 ? ? ? ? 48 8B 8B")
 DEFINE(Sigs::vtable::GamemodeVtable, "48 8D 05 ? ? ? ? 48 89 01 48 89 51 08 48 C7 41 ? ? ? ? ? C7 41 ? ? ? ? ?")
 
+
 // global
 DEFINE(Sigs::global::survivalReach, "F3 ? ? 05 ? ? ? ? 44 ? ? F8 76 09")
 

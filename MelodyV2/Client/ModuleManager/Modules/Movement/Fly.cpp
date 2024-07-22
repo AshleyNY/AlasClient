@@ -1,11 +1,15 @@
 #include "Fly.h"
+#include "../Combat/Killaura.h"
+#include "../../../Client.h"
 float Speedy = 5.0f;
 Fly::Fly() : Module("Fly", "Extend reach.", Category::MOVEMENT) {
-	addSlider<float>("X-Axis", "NULL", ValueType::FLOAT_T, &Speed, 0.f, 20.f);
+	addSlider<float>("X-Axis", "NULL", ValueType::FLOAT_T, &Speed, 0.f, 50.f);
     addSlider<float>("Y-Axis", "NULL", ValueType::FLOAT_T, &Speedy, 0.f, 20.f);
+    addBoolCheck("Strafe", "NULL", &Strafe);
 }
 static Vec2<float> getMotion(float playerYaw, float speed)
 {
+    static Killaura* kaMod2 = (Killaura*)client->moduleMgr->getModule("Killaura");
    //mc.isKeyDown('L'))
     bool w = mc.isKeyDown('W');
     bool a = mc.isKeyDown('A');
@@ -14,8 +18,12 @@ static Vec2<float> getMotion(float playerYaw, float speed)
 
     if (w)
     {
-        if (!a && !d)
-            playerYaw += 90.0f;
+        if (!a && !d) {
+            if (kaMod2->isEnabled() && kaMod2->TargetDis < kaMod2->MinSrange && kaMod2->TargetDis !=0)
+                playerYaw += 0.f;
+            else
+                playerYaw += 90.f;
+        }
         if (a)
             playerYaw += 45.0f;
         else if (d)
@@ -47,8 +55,25 @@ void Fly::onNormalTick(Actor* actor) {
 	Inventory* inv = plrInv->inventory;
 	BlockSource* region = localPlayer->dimension->blockSource;
     float flySpeed = Speed;
-    Vec2<float> motion = getMotion(localPlayer->rotationComponent->Get().y, flySpeed);
+    static Killaura* kaMod = (Killaura*)client->moduleMgr->getModule("Killaura");
 
+    float AheadY = localPlayer->rotationComponent->rotation.y;
+    float KaAhead = kaMod->rotAngle.y;
+    //mc.DisplayClientMessage("FLY = %f", AheadY);
+    if(kaMod->isEnabled() && kaMod->TargetDis < kaMod->MaxSrange && kaMod->TargetDis != 0)
+     motion = getMotion(KaAhead, flySpeed);
+    else
+     motion = getMotion(AheadY, flySpeed);
+
+    if (mc.isKeyDown(VK_SPACE)) {
+        localPlayer->stateVectorComponent->velocity.y += Speedy / 10.0f;
+    }
+    else if (mc.isKeyDown(VK_SHIFT)) {
+        localPlayer->stateVectorComponent->velocity.y -= Speedy / 10.0f;
+    }
+    else {
+        localPlayer->stateVectorComponent->velocity.y = 0.0f;
+    }
     bool w = mc.isKeyDown('W');
     bool a = mc.isKeyDown('A');
     bool s = mc.isKeyDown('S');
@@ -58,19 +83,12 @@ void Fly::onNormalTick(Actor* actor) {
         motion.x = 0.0f;
         motion.y = 0.0f;
     }
-    //EntityContext* entitescontext = localPlayer->entityContext;
-    //localPlayer->setonground(entitescontext, true);
-    
-    localPlayer->stateVectorComponent->velocity.x = motion.x;
-    localPlayer->stateVectorComponent->velocity.z = motion.y;
 
-    if (mc.isKeyDown(VK_SPACE)) {
-        localPlayer->stateVectorComponent->velocity.y = Speedy / 10.0f;
-    }
-    else if (mc.isKeyDown(VK_SHIFT)) {
-        localPlayer->stateVectorComponent->velocity.y = -Speedy / 10.0f;
-    }
-    else {
-        localPlayer->stateVectorComponent->velocity.y = 0.0f;
-    }
+    //EntityContext* entitescontext = localPlayer->entityContext;
+    //localPlayer->setonground(entitescontext, true);;
+        MoveVec.x = motion.x;
+        MoveVec.y = localPlayer->stateVectorComponent->velocity.y;
+        MoveVec.z = motion.y;
+        localPlayer->lerpMotion(MoveVec);
+    
 }

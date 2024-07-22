@@ -26,6 +26,8 @@ protected:
 			static const std::string clientName = "Melody";
 			Vec2<float> textPos = Vec2<float>((windowSize.x - RenderUtils::getTextWidth(clientName, 7.5f)) / 2.f, imagePos.y);
 			RenderUtils::drawText(textPos, clientName, colorsMod->getColor().toMC_Color(), 7.5f, 1.f, true);
+
+			Vec4<float> rect = Vec4<float>(windowSize.x, windowSize.y, windowSize.x + 100, windowSize.y + 100);
 			RenderUtils::Flush();
 			return 0;
 		}

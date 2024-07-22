@@ -3,13 +3,12 @@
 
 class Killaura : public Module {
 private:
-	float targetRange = 7.f;
-	float wallRange = 5.f;
+
+
 	int Mode = 0;
-	int rotMode = 1;
-	Vec2<float> rotAngle;
+
 	int switchMode = 0;
-	bool attackMob = false;
+	bool isInRange = false;
 	bool hurttime = false;
 	int attackDelay = 2;
 	int attackDelayTick = 0;
@@ -20,9 +19,16 @@ private:
 
 	int getBestWeaponSlot();
 public:
+	float TargetDis = 0;
+	float ARange = 5.f;
+	float MaxSrange = 20.f;
+	float MinSrange = 3.f;
+	float targetRange = 7.f;
+	bool attackMob = false;
 	std::vector<Actor*> targetList;
+	Vec2<float> rotAngle;
 	Killaura();
-
+	int rotMode = 1;
 	virtual void onNormalTick(Actor* actor) override;
 	virtual void onSendPacket(Packet* packet, bool& shouldCancel) override;
 	virtual void onImGuiRender(ImDrawList* drawlist) override;

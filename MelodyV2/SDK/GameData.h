@@ -13,9 +13,14 @@ public:
 	inline void setClientInstance(ClientInstance* ci) { this->clientInstance = ci; }
 	inline HIDController* getHIDController() { return this->hidController; }
 	inline void setHIDController(HIDController* Hid) { this->hidController = Hid; }
-	inline LocalPlayer* getLocalPlayer() { return clientInstance->getLocalPlayer(); }
+	inline LocalPlayer* getLocalPlayer() {
+		if (clientInstance == nullptr)
+			return 0;
+		else
+		return clientInstance->getLocalPlayer();
+	}
 	inline GameMode* getGameMode() {
-		if (getLocalPlayer() == nullptr) return nullptr;
+		//if (getLocalPlayer() == nullptr) return nullptr;
 		return getLocalPlayer()->getGameMode();
 	}
 	inline void sendPacket(Packet* packet) {

@@ -6,4 +6,5 @@
 struct ActorHeadRotationComponent {
 	float headRot;
 	float oldHeadRot;
+
 };

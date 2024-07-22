@@ -9,11 +9,11 @@ ESP::ESP() : Module("ESP", "ESP Enities.", Category::RENDER) {
 
 void ESP::onRender(MinecraftUIRenderContext* ctx) {
 	LocalPlayer* localPlayer = mc.getLocalPlayer();
-	Level* level = localPlayer->getLevel();
-	if (localPlayer == nullptr) return;
-	if (level == nullptr) return;
-	if (!mc.canUseMoveKeys()) return;
 
+	if (localPlayer == nullptr) return;
+	if (!mc.canUseMoveKeys()) return;
+	Level* level = localPlayer->getLevel();
+	if (level == nullptr) return;
 	espList.clear();
 
 	for (Actor* ent : level->getRuntimeActorList()) {

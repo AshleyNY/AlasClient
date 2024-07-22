@@ -1,15 +1,17 @@
 #include "Killaura.h"
 #include <cmath> // for std::atan2()
 Killaura::Killaura() : Module("Killaura", "Auto attack players / mobs arround u.", Category::COMBAT) {
-	addSlider<float>("Target Range", "Players/Mobs have range lower than this will be targeted", ValueType::FLOAT_T, &targetRange, 3.f, 12.f);
-	addSlider<float>("Wall Range", "NULL", ValueType::FLOAT_T, &wallRange, 0.f, 12.f);
+	addSlider<float>("Target Range", "Players/Mobs have range lower than this will be targeted", ValueType::FLOAT_T, &targetRange, 3.f, 20.f);
+	addSlider<float>("Attack Range", "NULL", ValueType::FLOAT_T, &ARange, 0.f, 10.f);
+	addSlider<float>("Max Strafe Range", "NULL", ValueType::FLOAT_T, &MaxSrange, 0.f, 20.f);
+	addSlider<float>("Min Strafe Range", "NULL", ValueType::FLOAT_T, &MinSrange, 0.f, 10.f);
 	addEnumSetting("Mode", "NULL", { "Single", "Multi" }, &Mode);
 	addEnumSetting("Rotation", "NULL", { "None", "Silent" ,"Strafe"}, &rotMode);
 	addEnumSetting("Switch", "NULL", { "None", "Full", "Silent" }, &switchMode);
 	addBoolCheck("Attack Mob", "If u want attack mob or not", &attackMob);
 	addBoolCheck("Hurttime check", "NULL", &hurttime);
 	addSlider<int>("Attack delay", "NULL", ValueType::INT_T, &attackDelay, 0, 20);
-	addBoolCheck("Visual Range", "NULL", &visualRange);
+	addBoolCheck("Visual AttackRange", "NULL", &visualRange);
 	addColorPicker("VR Color", "NULL", &vRColor);
 	addBoolCheck("Target Visualize", "NULL", &targetVisualize);
 	addColorPicker("TV Color", "NULL", &visualizeColor);
@@ -74,16 +76,27 @@ void Killaura::onNormalTick(Actor* actor) {
 
 	for (auto& target : level->getRuntimeActorList()) {
 		if (TargetUtils::isTargetValid(target, attackMob)) {
-			float seenPercent = region->getSeenPercent(localPlayer->stateVectorComponent->pos, *target->getAABB());
 			float dist = target->stateVectorComponent->pos.dist(localPlayer->stateVectorComponent->pos);
-			float rangeCheck = (seenPercent > 0.f) ? targetRange : wallRange;
-			if (dist < rangeCheck) targetList.push_back(target);
+			float rangeCheck = targetRange;
+			if (dist < rangeCheck)
+				targetList.push_back(target);
 		}
 	}
 
 	if (!targetList.empty()) {
 		std::sort(targetList.begin(), targetList.end(), TargetUtils::sortByDist);
-
+	    TargetDis = targetList[0]->stateVectorComponent->pos.dist(localPlayer->stateVectorComponent->pos);
+		isInRange = true;
+		if (TargetDis < MaxSrange) {
+		
+			rotAngle = GetRotations(localPlayer->stateVectorComponent->pos, targetList[0]->stateVectorComponent->pos.sub(Vec3<float>(0.f, 0.9f, 0.f)));
+			//mc.DisplayClientMessage("KA = %f", rotAngle.y);
+			if (rotMode == 2) {
+				localPlayer->rotationComponent->rotation = rotAngle;
+				localPlayer->rotationComponent->Set(rotAngle);
+				localPlayer->rotationComponent->oldRotation = rotAngle;
+			}
+		}
 		if (attackDelayTick >= attackDelay) {
 			int bestSlot = getBestWeaponSlot();
 			int oldSlot = plrInv->selectedSlot;
@@ -113,39 +126,32 @@ void Killaura::onNormalTick(Actor* actor) {
 			if (Mode = 1)
 			{
 				for (auto& target : targetList) {
-					if (!(hurttime && target->hurtTime > 0)) {
-						InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), target->stateVectorComponent->pos.sub(Vec3<int>(0.f,0.2f,0.f)));
+					if (target->stateVectorComponent->pos.dist(localPlayer->stateVectorComponent->pos) < ARange) {
+						if (!(hurttime && target->hurtTime > 0)) {
+							InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), target->stateVectorComponent->pos.sub(Vec3<int>(0.f, 0.2f, 0.f)));
 
-						mc.getClientInstance()->loopbackPacketSender->send(&inter);
-						gm->attack(target);
-						localPlayer->swing();
+							mc.getClientInstance()->loopbackPacketSender->send(&inter);
+							gm->attack(target);
+							localPlayer->swing();
+						}
 					}
 				}
 			}
 			if (Mode = 0)
 			{
-				if (!(hurttime && targetList[0]->hurtTime > 0)) {
-					InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), targetList[0]->stateVectorComponent->pos.sub(Vec3<int>(0.f, 0.2f, 0.f)));
+				if (TargetDis < ARange) {
+					if (!(hurttime && targetList[0]->hurtTime > 0)) {
+						InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), targetList[0]->stateVectorComponent->pos.sub(Vec3<int>(0.f, 0.2f, 0.f)));
 
-					mc.getClientInstance()->loopbackPacketSender->send(&inter);
-					gm->attack(targetList[0]);
-					localPlayer->swing();
+						mc.getClientInstance()->loopbackPacketSender->send(&inter);
+						gm->attack(targetList[0]);
+						localPlayer->swing();
+					}
 				}
 			}
 			
 
-			rotAngle = GetRotations(localPlayer->stateVectorComponent->pos, targetList[0]->stateVectorComponent->pos.sub(Vec3<float>(0.f, 0.9f, 0.f)));
-
-			if (rotMode == 2) {
-				//auto haah = std::to_string(inv->getItemStack(oldSlot)->getItemPtr()->itemId);
-				localPlayer->rotationComponent->rotation = rotAngle;
-				localPlayer->rotationComponent->Set(rotAngle);
-				localPlayer->rotationComponent->oldRotation = *localPlayer->getRotationPrev();
-				//char message2[256];  // Adjust the buffer size as needed
-				//sprintf(message2, "id  = ", haah);
-				//mc.DisplayClientMessage(haah.c_str());
-
-			}
+			
 
 			if (shouldSwitch && switchMode == 2) {
 				plrInv->selectedSlot = oldSlot;
@@ -157,6 +163,11 @@ void Killaura::onNormalTick(Actor* actor) {
 		else {
 			attackDelayTick++;
 		}
+	}
+	else {
+		isInRange = false;
+		targetList.clear();
+		TargetDis = 0;
 	}
 }
 
@@ -196,7 +207,7 @@ void Killaura::onImGuiRender(ImDrawList* d) {
 		for (int i = 0; i < pointsList.size(); i++) {
 			int next = i + 1;
 			if (next >= pointsList.size()) next = 0;
-			d->AddLine(pointsList[i].toImVec2(), pointsList[next].toImVec2(), vRColor.toImColor(), 2.f);
+			d->AddLine(pointsList[i].toImVec2(), pointsList[next].toImVec2(), isInRange ? ImColor(255,0,0):vRColor.toImColor(), 2.f);
 		}
 	}
 	ImGuiIO& io = ImGui::GetIO();

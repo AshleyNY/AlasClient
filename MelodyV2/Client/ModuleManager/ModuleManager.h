@@ -15,6 +15,8 @@
 #include "Modules/Combat/GravityAura.h"
 #include "Modules/Combat/AutoAnvil.h"
 #include "Modules/Combat/AutoTntSpammer.h"
+#include "Modules/Combat/AnchorAura.h"
+#include "Modules/Combat/AnchorNeo.h"
 //Misc
 #include "Modules/Misc/NoPacket.h"
 #include "Modules/Misc/Timer.h"

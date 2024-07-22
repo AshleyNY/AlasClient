@@ -211,6 +211,8 @@
     <ClCompile Include="Client\ModuleManager\Modules\Client\CustomFont.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Client\HUD.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Client\Notifications.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Combat\AnchorAura.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Combat\AnchorNeo.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoCrystal.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoMine.cpp" />
@@ -337,6 +339,8 @@
     <ClInclude Include="Client\ModuleManager\Modules\Client\HUD.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Client\Clients.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Client\Notifications.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Combat\AnchorAura.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Combat\AnchorNeo.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoCrystal.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoMine.h" />
@@ -468,7 +472,7 @@
     <ClInclude Include="SDK\Classes\RootUIControl.h" />
     <ClInclude Include="SDK\Classes\ScreenContext.h" />
     <ClInclude Include="SDK\Classes\ScreenView.h" />
-	<ClInclude Include="SDK\Classes\ActorRotate.h" />
+    <ClInclude Include="SDK\Classes\ActorRotate.h" />
     <ClInclude Include="SDK\Classes\SimpleContainer.h" />
     <ClInclude Include="SDK\Classes\Tessellator.h" />
     <ClInclude Include="SDK\Classes\TextHolder.h" />
@@ -493,21 +497,6 @@
     <ClInclude Include="SDK\GameData.h" />
     <ClInclude Include="SDK\MCTextFormat.h" />
     <ClInclude Include="SDK\Signatures.h" />
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
     <ClInclude Include="Utils\ColorUtils.h" />
     <ClInclude Include="Utils\TargetUtils.h" />
     <ClInclude Include="Utils\ImGuiUtils.h" />

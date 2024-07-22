@@ -12,7 +12,7 @@ bool TargetUtils::isTargetValid(Actor* target, bool isMob) {
     if (localPlayer == nullptr) return false;
     if (!localPlayer->canAttack(target, false)) return false;
     if (target == nullptr) return false;
-
+    if (target == localPlayer) return false;
     if (!target->isAlive()) return false;
     if (NiggaMod->isEnabled()) {
         if ((target->aabbComponent->height < 1.5f || target->aabbComponent->width < 0.49f || target->aabbComponent->height > 2.1f || target->aabbComponent->width > 0.9f)) return false;
@@ -47,7 +47,7 @@ bool TargetUtils::isTargetValid(Actor* target, bool isMob) {
         if (!target->isPlayer()) return false;
         if (entId != 319) return false; // Ensure it's a player
         if (!target->canShowNameTag()) return false;
-        if (target == localPlayer) return false;
+
     }
     else {
         // Additional checks for mobs can be added here

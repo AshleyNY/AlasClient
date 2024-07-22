@@ -146,31 +146,7 @@ static void tryGS(Vec3<int> tryBuildPos) {
 	}
 }
 
-std::vector<Vec3<float>> calcSideArray;
-std::vector<Vec3<float>> playerSideArray;
-static bool isSideEmpty(Actor* ent) {
-	bool sendBack = false;
-	std::vector<Vec3<float>> sidesBlocksOnly = {
-		Vec3<float>(1, 0, 0),
-		Vec3<float>(0, 0, 1),
-		Vec3<float>(-1, 0, 0),
-		Vec3<float>(0, 0, -1) };
 
-	for (auto checkThis : sidesBlocksOnly) {
-		auto playerOn = Vec3<float>(ent->getPosition()->x, ent->aabbComponent->aabb.lower.y +0.1f, ent->getPosition()->z);
-		auto rndOffPlayerOn = playerOn.floor();
-
-		auto calcSides = rndOffPlayerOn.add(checkThis);
-		calcSideArray.push_back(calcSides);
-		Block* block = mc.getLocalPlayer()->dimension->blockSource->getBlock(calcSides.toInt());
-		if (block->blockLegacy->blockId == 0) {
-			AABB hitbox = AABB(calcSides.add(0.05), calcSides.add(0.95));
-			if (!hitbox.intersects(ent->aabbComponent->aabb))
-				sendBack = true;
-		}
-	}
-	return sendBack;
-}
 
 
 

@@ -229,6 +229,15 @@ void Killaura::onNormalTick(Actor* actor) {
 	}
 }
 
+void Killaura::onEnable()
+{
+}
+
+void Killaura::onDisable()
+{
+	targetList.clear();
+}
+
 void Killaura::onSendPacket(Packet* packet, bool& shouldCancel) {
 	if (!targetList.empty() && rotMode == 1 && packet->getId() == PacketID::PlayerAuthInput) {
 		PlayerAuthInputPacket* authPacket = (PlayerAuthInputPacket*)packet;

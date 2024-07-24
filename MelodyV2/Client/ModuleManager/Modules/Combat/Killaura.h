@@ -36,6 +36,8 @@ public:
 	Killaura();
 	int rotMode = 1;
 	virtual void onNormalTick(Actor* actor) override;
+	virtual void onEnable() override;
+	virtual void onDisable() override;
 	virtual void onSendPacket(Packet* packet, bool& shouldCancel) override;
 	virtual void onImGuiRender(ImDrawList* drawlist) override;
 };

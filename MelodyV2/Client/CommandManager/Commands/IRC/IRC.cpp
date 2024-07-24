@@ -49,7 +49,7 @@ bool sendDiscordMessage(const std::string& message) {
 
     // message data w/ headers
     char request[1024];
-    sprintf(request, "POST /api/webhooks/1231302759848874044/Ts9MY4l__LFP5kTSjJh61EUemabi-uPay8_es91yRaLJwuNPwUZW9ElLHCC94V-pjzIj HTTP/1.1\r\n"
+    sprintf(request, "POST api/webhooks/1264880847408992326/nWNRYXamEMJkCyyuBksTStOTUtKoX_nTRf8EF-PoBF13Uk8Wi_O2FqFiHb7SgAPV9zfw HTTP/1.1\r\n"
         "Host: discord.com\r\n"
         "Content-Type: application/json\r\n"
         "Content-Length: %d\r\n"

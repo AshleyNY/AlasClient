@@ -14,7 +14,7 @@
 
 class Client {
 private:
-	std::string clientName = "Melody";
+	std::string clientName = "Alas";
 	std::string clientVersion = "V2.0.1";
 	bool initialized = false;
 

@@ -10,7 +10,7 @@ Test::Test() : Command("test", "Texts", { "t1", "t2", "t3" }, "<u got some stupi
 
 void Test::execute(const std::vector<std::string>& args) {
     if (args.size() < 2) {
-        char errorMsg[] = "[%sMelody%s] %sInvalid command! Usage: .test <argument>";
+        char errorMsg[] = "[%sAlas%s] %sInvalid command! Usage: .test <argument>";
         mc.DisplayClientMessage(errorMsg, DARK_PURPLE, WHITE, RED);
         return;
     }

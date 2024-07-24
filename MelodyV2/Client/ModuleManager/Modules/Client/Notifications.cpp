@@ -25,7 +25,7 @@ void Notifications::Render(ImDrawList* drawlist) {
 		if (notifList.size() != 0) notifList.clear();
 		return;
 	}
-	static const float textSize = 1.f;
+	static const float textSize = 1.35f;
 	const float textHeight = ImGuiUtils::getTextHeight(textSize);
 	static const float textPadding = 2.f * textSize;
 

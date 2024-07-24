@@ -2,17 +2,23 @@
 #include <cmath> // for std::atan2()
 Killaura::Killaura() : Module("Killaura", "Auto attack players / mobs arround u.", Category::COMBAT) {
 	addSlider<float>("Target Range", "Players/Mobs have range lower than this will be targeted", ValueType::FLOAT_T, &targetRange, 3.f, 20.f);
-	addSlider<float>("Attack Range", "NULL", ValueType::FLOAT_T, &ARange, 0.f, 10.f);
-	addSlider<float>("Max Strafe Range", "NULL", ValueType::FLOAT_T, &MaxSrange, 0.f, 20.f);
-	addSlider<float>("Min Strafe Range", "NULL", ValueType::FLOAT_T, &MinSrange, 0.f, 10.f);
+	addSlider<float>("Attack Range", "Players/Mobs have range lower than this will be attacked", ValueType::FLOAT_T, &ARange, 0.f, 10.f);
+	addSlider<float>("MaxSRange", "MAX Strafe Range", ValueType::FLOAT_T, &MaxSrange, 0.f, 20.f);
+	addSlider<float>("MinSRange", "Min Strafe Range", ValueType::FLOAT_T, &MinSrange, 0.f, 10.f);
 	addEnumSetting("Mode", "NULL", { "Single", "Multi" }, &Mode);
 	addEnumSetting("Rotation", "NULL", { "None", "Silent" ,"Strafe"}, &rotMode);
-	addEnumSetting("Switch", "NULL", { "None", "Full", "Silent" }, &switchMode);
+	addEnumSetting("Switch", "NULL", { "Key", "Full", "Silent" }, &switchMode);
 	addBoolCheck("Attack Mob", "If u want attack mob or not", &attackMob);
 	addBoolCheck("Hurttime check", "NULL", &hurttime);
+	addBoolCheck("KeyContrl", "Up or Down to change package,left or right to change weapon", &keyAddPack);
 	addSlider<int>("Attack delay", "NULL", ValueType::INT_T, &attackDelay, 0, 20);
-	addBoolCheck("Visual AttackRange", "NULL", &visualRange);
-	addColorPicker("VR Color", "NULL", &vRColor);
+	addSlider<int>("Package", "NULL", ValueType::INT_T, &package, 1, 10);
+	addBoolCheck("Visual TRange", "TargetRange", &visualRange);
+	addColorPicker("VA Color", "NULL", &vRColor);
+	addBoolCheck("Visual ARange", "AttackRange", &visualRange1);
+	addColorPicker("VT Color", "NULL", &vRColor1);
+	addBoolCheck("Visual SRange", "SrafeRange", &visualRange2);
+	addColorPicker("VS Color", "NULL", &vRColor2);
 	addBoolCheck("Target Visualize", "NULL", &targetVisualize);
 	addColorPicker("TV Color", "NULL", &visualizeColor);
 }
@@ -56,7 +62,32 @@ int Killaura::getBestWeaponSlot() {
 	return slot;
 }
 # define M_PI 3.14159265358979323846 /* pi */
-
+void GetSword() {
+	auto supplies = mc.getLocalPlayer()->getPlayerInventory();
+	auto inv = supplies->inventory;  // g_Data.getLocalPlayer()->getSupplies()->inventory->getItemStack(g_Data.getLocalPlayer()->getSupplies())->getItem()->itemID
+	for (int i = 0; i < 9; i++) {
+		ItemStack* itemStack = inv->getItemStack(i);
+		if (itemStack->isValid()) {
+			if (itemStack->getItemPtr()->itemId == 319) {
+				supplies->selectedSlot = i;
+				return;
+			}
+		}
+	}
+}
+void GetTrident() {
+	auto supplies = mc.getLocalPlayer()->getPlayerInventory();
+	auto inv = supplies->inventory;  // g_Data.getLocalPlayer()->getSupplies()->inventory->getItemStack(g_Data.getLocalPlayer()->getSupplies())->getItem()->itemID
+	for (int i = 0; i < 9; i++) {
+		ItemStack* itemStack = inv->getItemStack(i);
+		if (itemStack->isValid()) {
+			if (itemStack->getItemPtr()->itemId == 554) {
+				supplies->selectedSlot = i;
+				return;
+			}
+		}
+	}
+}
 Vec2<float> GetRotations(Vec3<float> playerEyePos, Vec3<float> targetPos) {
 	Vec3<float> delta = targetPos.sub(playerEyePos);
 	float yaw = atan2(delta.z, delta.x) * 180.0f / M_PI;
@@ -70,9 +101,31 @@ void Killaura::onNormalTick(Actor* actor) {
 	auto gm = mc.getGameMode();
 	auto region = localPlayer->dimension->blockSource;
 	auto level = localPlayer->getLevel();
-
-	targetList.clear();
 	if (!level) return;
+	if (package > 100) {
+		package = 0;
+	}
+	if (keyAddPack) {
+		if (mc.isKeyDown(38)) {
+			package++;
+			mc.DisplayClientMessage("[%sAlas%s]:%sPackage = %s%d",DARK_PURPLE,WHITE,GREEN, RED,package);
+		}
+		else if (mc.isKeyDown(40)) {
+			package--;
+			mc.DisplayClientMessage("[%sAlas%s]:%sPackage = %s%d", DARK_PURPLE, WHITE, GREEN, RED, package);
+		}
+		if (mc.isKeyDown(37)) {
+			mc.DisplayClientMessage("[%sAlas%s]:%sWeapon = %sSword", DARK_PURPLE, WHITE, GREEN, RED);
+			GetSword();
+		}
+		if (mc.isKeyDown(39)) {
+			mc.DisplayClientMessage("[%sAlas%s]:%sWeapon = %sTrident", DARK_PURPLE, WHITE, GREEN, RED);
+			GetTrident();
+		}
+	}
+	//bool sb = mc.getLocalPlayer().is
+	targetList.clear();
+
 
 	for (auto& target : level->getRuntimeActorList()) {
 		if (TargetUtils::isTargetValid(target, attackMob)) {
@@ -87,6 +140,7 @@ void Killaura::onNormalTick(Actor* actor) {
 		std::sort(targetList.begin(), targetList.end(), TargetUtils::sortByDist);
 	    TargetDis = targetList[0]->stateVectorComponent->pos.dist(localPlayer->stateVectorComponent->pos);
 		isInRange = true;
+		//int health = targetList[0]->gethealth();
 		if (TargetDis < MaxSrange) {
 		
 			rotAngle = GetRotations(localPlayer->stateVectorComponent->pos, targetList[0]->stateVectorComponent->pos.sub(Vec3<float>(0.f, 0.9f, 0.f)));
@@ -131,8 +185,10 @@ void Killaura::onNormalTick(Actor* actor) {
 							InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), target->stateVectorComponent->pos.sub(Vec3<int>(0.f, 0.2f, 0.f)));
 
 							mc.getClientInstance()->loopbackPacketSender->send(&inter);
-							gm->attack(target);
-							localPlayer->swing();
+							for (int i = 0; i < package; i++) {
+								gm->attack(target);
+								localPlayer->swing();
+							}
 						}
 					}
 				}
@@ -144,8 +200,10 @@ void Killaura::onNormalTick(Actor* actor) {
 						InteractPacket inter(InteractAction::LEFT_CLICK, mc.getLocalPlayer()->getRuntimeID(), targetList[0]->stateVectorComponent->pos.sub(Vec3<int>(0.f, 0.2f, 0.f)));
 
 						mc.getClientInstance()->loopbackPacketSender->send(&inter);
-						gm->attack(targetList[0]);
-						localPlayer->swing();
+						for (int i = 0; i < package; i++) {
+							gm->attack(targetList[0]);
+							localPlayer->swing();
+						}
 					}
 				}
 			}
@@ -183,6 +241,21 @@ void Killaura::onSendPacket(Packet* packet, bool& shouldCancel) {
 		movepacket->rotation = rotAngle;
 		movepacket->headYaw = rotAngle.y;
 	}
+	if (!targetList.empty() && rotMode == 2 && packet->getId() == PacketID::MovePlayerPacket) {
+		auto* movepacket = (MovePlayerPacket*)packet;
+		movepacket->rotation = rotAngle;
+		movepacket->headYaw = rotAngle.y;
+	}
+	if (!targetList.empty() && rotMode == 2 && packet->getId() == PacketID::PlayerAuthInput) {
+		PlayerAuthInputPacket* authPacket = (PlayerAuthInputPacket*)packet;
+		authPacket->rotation = rotAngle;
+		authPacket->headYaw = rotAngle.y;
+	}
+/*	if (!targetList.empty() && packet->getId() == PacketID::MovePlayerPacket) {
+		auto* movepacket = (MovePlayerPacket*)packet;
+		movepacket->onGround = false;
+		//movepacket->position = mc.getLocalPlayer()->getPosition()->y + 1;
+	}*/
 }
 
 void Killaura::onImGuiRender(ImDrawList* d) {
@@ -208,6 +281,44 @@ void Killaura::onImGuiRender(ImDrawList* d) {
 			int next = i + 1;
 			if (next >= pointsList.size()) next = 0;
 			d->AddLine(pointsList[i].toImVec2(), pointsList[next].toImVec2(), isInRange ? ImColor(255,0,0):vRColor.toImColor(), 2.f);
+		}
+	}
+	if (visualRange1) {
+		Vec3<float> lpPos = localPlayer->stateVectorComponent->pos;
+		if (mc.cameraPerspectiveMode == 0) lpPos = mc.getClientInstance()->getLevelRenderer()->levelRendererPlayer->cameraPos1;
+		std::vector<Vec2<float>> pointsList;
+		for (int i = 0; i < 360; i += 4) {
+			float calcYaw = (i + 90) * (PI / 180);
+			float x = cos(calcYaw) * ARange;
+			float z = sin(calcYaw) * ARange;
+			static Vec2<float> pointsVec2;
+			if (ImGuiUtils::worldToScreen(lpPos.add(x, -1.6f, z), pointsVec2)) {
+				pointsList.push_back(pointsVec2);
+			}
+		}
+		for (int i = 0; i < pointsList.size(); i++) {
+			int next = i + 1;
+			if (next >= pointsList.size()) next = 0;
+			d->AddLine(pointsList[i].toImVec2(), pointsList[next].toImVec2(),   vRColor1.toImColor(), 2.f);
+		}
+	}
+	if (visualRange2) {
+		Vec3<float> lpPos = localPlayer->stateVectorComponent->pos;
+		if (mc.cameraPerspectiveMode == 0) lpPos = mc.getClientInstance()->getLevelRenderer()->levelRendererPlayer->cameraPos1;
+		std::vector<Vec2<float>> pointsList;
+		for (int i = 0; i < 360; i += 4) {
+			float calcYaw = (i + 90) * (PI / 180);
+			float x = cos(calcYaw) * MaxSrange;
+			float z = sin(calcYaw) * MaxSrange;
+			static Vec2<float> pointsVec2;
+			if (ImGuiUtils::worldToScreen(lpPos.add(x, -1.6f, z), pointsVec2)) {
+				pointsList.push_back(pointsVec2);
+			}
+		}
+		for (int i = 0; i < pointsList.size(); i++) {
+			int next = i + 1;
+			if (next >= pointsList.size()) next = 0;
+			d->AddLine(pointsList[i].toImVec2(), pointsList[next].toImVec2(), vRColor2.toImColor(), 2.f);
 		}
 	}
 	ImGuiIO& io = ImGui::GetIO();

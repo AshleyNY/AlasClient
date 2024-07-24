@@ -37,7 +37,7 @@ void CommandManager::onSendTextPacket(TextPacket* packet, bool& shouldCancel) {
         }
     }
     if (args.size() == 0) {
-        mc.DisplayClientMessage("[%sMelody%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
+        mc.DisplayClientMessage("[%sAlas%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
         return;
     }
     Command* current = nullptr;
@@ -53,7 +53,7 @@ void CommandManager::onSendTextPacket(TextPacket* packet, bool& shouldCancel) {
         if (shouldBreak) break;
     }
     if (current == nullptr) {
-        mc.DisplayClientMessage("[%sMelody%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
+        mc.DisplayClientMessage("[%sAlas%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
         return;
     }
     current->execute(args);

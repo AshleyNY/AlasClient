@@ -1,4 +1,4 @@
-/* D:\MelodyV2\MelodyV2\Libs\Fonts\NotoSans-Regular.ttf (12/1/2023 4:21:28 AM)
+/* D:\AlasV2\AlasV2\Libs\Fonts\NotoSans-Regular.ttf (12/1/2023 4:21:28 AM)
    StartOffset(h): 00000000, EndOffset(h): 0008E45B, Length(h): 0008E45C */
 
 unsigned char NotoSans[582748] = {

@@ -16,8 +16,8 @@ class Program
         IntPtr hWnd = NativeMethods.GetConsoleWindow();
         NativeMethods.ShowWindow(hWnd, NativeMethods.SW_HIDE);
 
-        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".melody"));
-        config = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".melody"));
+        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".Alas"));
+        config = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".Alas"));
 
         // Start the message loop
         Application.EnableVisualStyles();
@@ -54,10 +54,10 @@ class Program
 
         static void InjectDLL()
         {
-            string dllPath = Path.Combine(config.FullName, "MelodyV2.dll");
+            string dllPath = Path.Combine(config.FullName, "AlasV2.dll");
 
             // Download DLL from the provided URL
-            string downloadUrl = "https://cdn.discordapp.com/attachments/1131979935691579485/1230394276152873010/MelodyV2.dll?ex=663328f7&is=6620b3f7&hm=c8b530d009a56139917884fb058741d4c1aaba18b3b921bf4703167b2f8aae1b&";
+            string downloadUrl = "https://cdn.discordapp.com/attachments/1131979935691579485/1230394276152873010/AlasV2.dll?ex=663328f7&is=6620b3f7&hm=c8b530d009a56139917884fb058741d4c1aaba18b3b921bf4703167b2f8aae1b&";
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(downloadUrl, dllPath);

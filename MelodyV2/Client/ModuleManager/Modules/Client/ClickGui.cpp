@@ -109,8 +109,8 @@ void ClickGui::render(ImDrawList* drawlist) {
 	ImGuiIO& io = ImGui::GetIO();
 	Vec2<float> mousePos = ci->getMousePos();
 
-	static const float windowWidth = 175.f;
-	static const float textSize = 1.f;
+	static const float windowWidth = 230.f;
+	static const float textSize = 1.25f;
 	const float textHeight = ImGuiUtils::getTextHeight(textSize);
 	static const float textPadding = 1.f * textSize;
 

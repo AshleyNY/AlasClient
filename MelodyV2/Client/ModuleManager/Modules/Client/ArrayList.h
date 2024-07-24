@@ -13,10 +13,10 @@ public:
 class ArrayList : public Module {
 public:
     bool bottom = false;
-    float size = 1.0f;
+    float size = 1.5f;
     float bgOpacity = 1.0f;
     float spacing = 0.0f;
-    int arraymod = 0;
+    int arraymod = 1;
     ArrayList();
     void onImGuiRender(ImDrawList* drawlist) override;
 

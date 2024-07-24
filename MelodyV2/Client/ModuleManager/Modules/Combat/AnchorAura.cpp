@@ -58,16 +58,6 @@ void getGS2() {
 void getAnchor2(){
 	auto supplies = mc.getLocalPlayer()->getPlayerInventory();
 	auto inv = supplies->inventory;  // g_Data.getLocalPlayer()->getSupplies()->inventory->getItemStack(g_Data.getLocalPlayer()->getSupplies())->getItem()->itemID
-	/*
-		for (int n = 0; n < 9; n++) {
-			C_ItemStack* stack = inv->getItemStack(n);
-			if (stack->item != nullptr) {
-				if (stack->getItem()->itemId == 89) {  // select anchor
-					supplies->selectedHotbarSlot = n;
-					return;
-				}
-			}
-		}*/
 	for (int i = 0; i < 9; i++) {
 		ItemStack* itemStack = inv->getItemStack(i);
 		if (itemStack->isValid()) {

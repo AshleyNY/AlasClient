@@ -17,6 +17,8 @@ ModuleManager::ModuleManager() {
 		moduleList.push_back(new AutoTntSpammer());
 		moduleList.push_back(new AnchorAura());
 		moduleList.push_back(new AnchorNeo());
+		moduleList.push_back(new PopCounter());
+		moduleList.push_back(new AutoTrap());
 		//moduleList.push_back(new AutoMine());
 		//Misc
 		moduleList.push_back(new NoPacket());
@@ -78,6 +80,8 @@ ModuleManager::ModuleManager() {
 	});
 	getModule("ClickGui")->setEnabled(false);
 	getModule("Notifications")->setEnabled(true);
+	getModule("ArrayList")->setEnabled(true);
+	getModule("HUD")->setEnabled(true);
 	this->initialized = true;
 }
 

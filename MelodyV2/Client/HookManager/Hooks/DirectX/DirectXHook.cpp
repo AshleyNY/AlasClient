@@ -62,7 +62,7 @@ void DirectXHook::Render(ImDrawList* drawlist) {
 	clickGuiMod->render(drawlist);
 	Notifications::Render(drawlist);
 	//ImGui::Text("%i", mc.getLocalPlayer()->getLevel()->getRuntimeActorList().size());
-	//ImGuiUtils::drawText(Vec2<float>(10.f, 6.f), "Melody", UIColor(255, 0, 0, 255), 2.f);
+	//ImGuiUtils::drawText(Vec2<float>(10.f, 6.f), "Alas", UIColor(255, 0, 0, 255), 2.f);
 }
 
 HRESULT DirectXHook::presentCallback(IDXGISwapChain3* pSwapChain, UINT syncInterval, UINT flags) {

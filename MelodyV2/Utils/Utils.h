@@ -212,7 +212,7 @@ public:
 	}
 
 	inline static std::string getClientPath() {
-		static const std::string path = getRoamingStatePath() + "Melody\\";
+		static const std::string path = getRoamingStatePath() + "Alas\\";
 		return path;
 	}
 

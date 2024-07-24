@@ -16,8 +16,8 @@ protected:
 
 	static void FontDrawTransformedCallback(void* _this, ScreenContext* screenContext, TextHolder* textStr, float posX, float posY, MC_Color color, float angle, float scale, bool centered, float maxWidth) {
 		static std::vector<std::string> texts = {
-			"MelodyV2 is riel?",
-			"Use keys insert to open melody clickgui",
+			"AlasV2 is riel?",
+			"Use keys insert to open Alas clickgui",
 			"NIGGGGGGGGERRRRSSS",
 			"Tony have the ebiggest rizz ever",
 			"Fuk u wants monkey",

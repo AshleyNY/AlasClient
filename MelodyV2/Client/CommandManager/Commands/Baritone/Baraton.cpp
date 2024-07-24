@@ -17,7 +17,7 @@ Vec2<float> gEtRotations(Vec3<float> playerEyePos, Vec3<float> targetPos) {
 }
 void Baritone::execute(const std::vector<std::string>& args) {
     if (args.size() < 4 || args[1] != "walk") {
-        char errorMsg[] = "[%sMelody%s] %sInvalid command! Usage: .Baritone walk <x> <y> <z>";
+        char errorMsg[] = "[%sAlas%s] %sInvalid command! Usage: .Baritone walk <x> <y> <z>";
         mc.DisplayClientMessage(errorMsg, DARK_PURPLE, WHITE, RED);
         return;
     }

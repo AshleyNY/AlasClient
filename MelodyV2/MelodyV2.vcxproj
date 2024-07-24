@@ -216,6 +216,8 @@
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoCrystal.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoMine.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoTrap.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Combat\PopCounter.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\Reach.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\Killaura.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\GravityAura.cpp" />
@@ -344,8 +346,10 @@
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoCrystal.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoMine.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoTrap.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\GravityAura.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\Killaura.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Combat\PopCounter.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\Reach.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoAnvil.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Misc\NoPacket.h" />
@@ -485,6 +489,8 @@
     <ClInclude Include="SDK\Components\ActorRotationComponent.h" />
     <ClInclude Include="SDK\Components\ActorTypeComponent.h" />
     <ClInclude Include="SDK\Components\AABBShapeComponent.h" />
+    <ClInclude Include="SDK\Components\CameraComponent.h" />
+    <ClInclude Include="SDK\Components\CameraDirectComponent.h" />
     <ClInclude Include="SDK\Components\FallDistanceComponent.h" />
     <ClInclude Include="SDK\Components\Flags\OnGroundFlag.h" />
     <ClInclude Include="SDK\Components\Flags\JumpFromGroundRequestFlag.h" />

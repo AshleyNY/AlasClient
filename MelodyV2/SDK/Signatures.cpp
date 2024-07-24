@@ -3,6 +3,8 @@
 //gamedata
 DEFINE(Sigs::gamedata::isKeyDown, "4C 8D 05 ?? ?? ?? ?? 89 54 24 20 88 4C 24 24")
 DEFINE(Sigs::gamedata::sendKey, "48 ? ? 48 ? ? ? 4C 8D 05 ? ? ? ? 89")
+//48 89 5c 24 ? 57 48 83 ec ? f3 41 0f 10 00 49 8b d8 f3 41 0f 58 40 camera
+// //void CameraDirectLookSystemUtil::_handleLookInput(EntityContext&, CameraComponent const&, CameraDirectLookComponent&, Vec2 const&) func
 
 //packet
 DEFINE(Sigs::packet::respawnpacket,"48 89 5c 24 ? 48 89 7c 24 ? 55 48 8d 6c 24 ? 48 81 ec ? ? ? ? 48 8b 05 ? ? ? ? 48 33 c4 48 89 45 ? 48 8b d9 0f 57 c0 33 c0 0f 11 45")
@@ -102,3 +104,4 @@ DEFINE(Sigs::component::getMobBodyRotationComponent, "E8 ? ? ? ? BA ? ? ? ? 48 8
 DEFINE(Sigs::component::getMobEffectsComponent, "E8 ? ? ? ? 48 85 C0 74 34 4C 8B 00 8B D3")
 DEFINE(Sigs::component::onGroundFlag, "e8 ? ? ? ? 4c 8b c8 48 89 45 ? 48 89 75 ? 33 c9")
 DEFINE(Sigs::component::getActorUniqueIDComponent, "E8 ? ? ? ? 48 8D 54 24 ? 89 5C 24 20 48 8B C8 E8 ? ? ? ? EB B6 E8 ? ? ? ? CC CC CC 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 50")
+//DEFINE(Sigs::component::CameraComponent, "48 89 5c 24 ? 57 48 83 ec ? f3 41 0f 10 00 49 8b d8 f3 41 0f 58 40")

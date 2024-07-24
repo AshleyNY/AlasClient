@@ -14,7 +14,7 @@ protected:
 
 	static __int64 drawTextCallBack(MinecraftUIRenderContext* _this, FontBitmap* font, float* pos, std::string* text, MC_Color* color, float alpha, unsigned int textAlignment, TextMeasureData* textMeasureData, CaretMeasureData* caretMeasureData) {
 		/*
-		static std::string test = "Melody";
+		static std::string test = "Alas";
 		
 		std::string textStr = *text;
 

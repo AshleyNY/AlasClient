@@ -10,7 +10,7 @@
 Bind::Bind() : Command("bind", "Bind Mobules", { "b", "bi", "bin" }, "<u got some stupititys>") {}
 void Bind::execute(const std::vector<std::string>& args) {
     if (args.size() < 3) {
-        const char errorMsg[] = "[%sMelody%s] %sInvalid command! Usage: .(b,bi,bind) <module> <key>";
+        const char errorMsg[] = "[%sAlas%s] %sInvalid command! Usage: .(b,bi,bind) <module> <key>";
         mc.DisplayClientMessage(errorMsg, DARK_PURPLE, WHITE, RED);
         return;
     }

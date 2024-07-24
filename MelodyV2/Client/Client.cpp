@@ -54,7 +54,7 @@ void Client::init() {
     HookManager::init();
 
     this->initialized = true;
-    Notifications::addNotifBox("Successfully injected Melody", 5.f);
+    Notifications::addNotifBox("Successfully injected Alas", 5.f);
     logF("Init times: %.2fs", (float)(clock() - start) / 1000.f);
 }
 

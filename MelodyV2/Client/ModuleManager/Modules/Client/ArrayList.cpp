@@ -13,7 +13,7 @@ ArrayList::ArrayList() : Module("ArrayList", "Display enabled modules list.", Ca
     addSlider<float>("Size", "Changes arraylist size.", ValueType::FLOAT_T, &size, 0.5f, 1.5f);
     addSlider<float>("BG Opacity", "Changes background opacitys.", ValueType::FLOAT_T, &bgOpacity, 0.f, 1.f);
     addSlider<float>("Spacing", "NULL", ValueType::FLOAT_T, &spacing, 0.f, 5.f);
-    addEnumSetting("Render Mode", "can't u just read", { "Melody", "Tony" }, &arraymod);
+    addEnumSetting("Render Mode", "can't u just read", { "Alas", "Tony" }, &arraymod);
 
     srand(static_cast<unsigned int>(time(0))); // Seed for random number generation
 }
@@ -137,7 +137,7 @@ void ArrayList::onImGuiRender(ImDrawList* drawlist) {
 
         UIColor textColor = colorsMod->getColor(-index * colorsMod->getSeperationValue());
 
-        if (arraymod == 0) { // Melody style
+        if (arraymod == 0) { // Alas style
             ImGuiUtils::fillRectangle(rectPos, UIColor(0, 0, 0, int(255.f * bgOpacity)));
             ImGuiUtils::drawText(textPos, moduleName, textColor, textSize);
             if (modName != "NULL") ImGuiUtils::drawText(Vec2<float>(textPos.x + ImGuiUtils::getTextWidth(std::string(moduleName + " "), textSize), textPos.y), modName, UIColor(255, 255, 255, 255), textSize);

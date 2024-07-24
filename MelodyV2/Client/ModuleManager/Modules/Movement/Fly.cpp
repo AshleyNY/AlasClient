@@ -3,9 +3,10 @@
 #include "../../../Client.h"
 float Speedy = 5.0f;
 Fly::Fly() : Module("Fly", "Extend reach.", Category::MOVEMENT) {
-	addSlider<float>("X-Axis", "NULL", ValueType::FLOAT_T, &Speed, 0.f, 50.f);
-    addSlider<float>("Y-Axis", "NULL", ValueType::FLOAT_T, &Speedy, 0.f, 20.f);
-    addBoolCheck("Strafe", "NULL", &Strafe);
+	addSlider<float>("X-Speed", "NULL", ValueType::FLOAT_T, &Speed, 0.f, 50.f);
+    addSlider<float>("Y-Speed", "NULL", ValueType::FLOAT_T, &Speedy, 0.f, 20.f);
+    addBoolCheck("DoCritic", "NULL", &Critic);
+    addSlider<float>("CritiGlide", "NULL", ValueType::FLOAT_T, &CritValue, 0.001f, 0.01f);
 }
 static Vec2<float> getMotion(float playerYaw, float speed)
 {
@@ -73,6 +74,9 @@ void Fly::onNormalTick(Actor* actor) {
     }
     else {
         localPlayer->stateVectorComponent->velocity.y = 0.0f;
+    }
+    if (Critic) {
+        localPlayer->stateVectorComponent->velocity.y -= CritValue;
     }
     bool w = mc.isKeyDown('W');
     bool a = mc.isKeyDown('A');

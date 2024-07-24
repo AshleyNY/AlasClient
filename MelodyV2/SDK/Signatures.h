@@ -117,5 +117,6 @@ namespace Sigs {
         extern const hat::signature_view getMobEffectsComponent;
         extern const hat::signature_view onGroundFlag;
         extern const hat::signature_view getActorUniqueIDComponent;
+        //extern const hat::signature_view CameraComponent;
     }
 }

@@ -2,7 +2,7 @@
 bool geyser2 = false;
 AnchorNeo::AnchorNeo() : Module("AnchorNeo", "NeoAura", Category::COMBAT) {
 	addSlider<int>("Range", "NULL", ValueType::INT_T, &Neorange, 3, 10);
-	addBoolCheck("Self", "NULL", &silent);
+	addBoolCheck("Strong", "NULL", &silent);
 	addBoolCheck("JavaMode", "NULL", &geyser2);
 }
 
@@ -219,7 +219,11 @@ void AnchorNeo::onRender(MinecraftUIRenderContext* renderCtx)
 }
 void AnchorNeo::onSendPacket(Packet* packet, bool& shouldCancel)
 {
-
+	if (packet->getId() == PacketID::PlayerAuthInput) {
+		auto* authPacket = reinterpret_cast<PlayerAuthInputPacket*>(packet);
+		authPacket->rotation = rotAnglePlace;
+		authPacket->headYaw = rotAnglePlace.y;
+	}
 	
 }
 void AnchorNeo::onDisable()

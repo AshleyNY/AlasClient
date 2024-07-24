@@ -23,7 +23,8 @@ protected:
 		static HUD* HudMod = (HUD*)client->moduleMgr->getModule("HUD");
 		if (strcmp(texturePtr->ptrToPath->filePath.getText(), "textures/ui/title") == 0) {
 			Vec2<float> windowSize = mc.getClientInstance()->guiData->windowSize;
-			static const std::string clientName = "Melody";
+			static const std::string clientName = "Alas";
+			
 			Vec2<float> textPos = Vec2<float>((windowSize.x - RenderUtils::getTextWidth(clientName, 7.5f)) / 2.f, imagePos.y);
 			RenderUtils::drawText(textPos, clientName, colorsMod->getColor().toMC_Color(), 7.5f, 1.f, true);
 

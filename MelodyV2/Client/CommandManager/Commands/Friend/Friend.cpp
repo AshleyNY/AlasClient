@@ -12,7 +12,7 @@ Friend::Friend() : Command("Friend", "Friends add or delete", { "f", "fri", "fri
 void Friend::execute(const std::vector<std::string>& args) {
     static Notifications* NotificationsMod = (Notifications*)client->moduleMgr->getModule("Notifications");
     if (args.size() < 2) {
-        mc.DisplayClientMessage("[%sMelody%s] %sInvalid command! Usage: .(f,fri,friends) <add/a> <playername> | <delete/d> <playername> | show", DARK_PURPLE, WHITE, RED);
+        mc.DisplayClientMessage("[%sAlas%s] %sInvalid command! Usage: .(f,fri,friends) <add/a> <playername> | <delete/d> <playername> | show", DARK_PURPLE, WHITE, RED);
         return;
     }
     std::string subCommand = args[1];
@@ -27,10 +27,10 @@ void Friend::execute(const std::vector<std::string>& args) {
         std::string sanitizedPlayerName = Utils::sanitize(playerName);
         if (std::find(TargetUtils::Friend.begin(), TargetUtils::Friend.end(), sanitizedPlayerName) == TargetUtils::Friend.end()) {
             TargetUtils::Friend.push_back(sanitizedPlayerName);
-            mc.DisplayClientMessage("[%sMelody%s] %s%s added to friends list!", DARK_PURPLE, WHITE, GREEN, sanitizedPlayerName.c_str());
+            mc.DisplayClientMessage("[%sAlas%s] %s%s added to friends list!", DARK_PURPLE, WHITE, GREEN, sanitizedPlayerName.c_str());
         }
         else {
-            mc.DisplayClientMessage("[%sMelody%s] %s%s is already in friends list!", DARK_PURPLE, WHITE, YELLOW, sanitizedPlayerName.c_str());
+            mc.DisplayClientMessage("[%sAlas%s] %s%s is already in friends list!", DARK_PURPLE, WHITE, YELLOW, sanitizedPlayerName.c_str());
         }
     }
     else if (subCommand == "delete" || subCommand == "d") {
@@ -38,23 +38,23 @@ void Friend::execute(const std::vector<std::string>& args) {
         auto it = std::find(TargetUtils::Friend.begin(), TargetUtils::Friend.end(), sanitizedPlayerName);
         if (it != TargetUtils::Friend.end()) {
             TargetUtils::Friend.erase(it);
-            mc.DisplayClientMessage("[%sMelody%s] %s%s removed from friends list!", DARK_PURPLE, WHITE, GREEN, sanitizedPlayerName.c_str());
+            mc.DisplayClientMessage("[%sAlas%s] %s%s removed from friends list!", DARK_PURPLE, WHITE, GREEN, sanitizedPlayerName.c_str());
         }
         else {
-            mc.DisplayClientMessage("[%sMelody%s] %s%s is not in friends list!", DARK_PURPLE, WHITE, YELLOW, sanitizedPlayerName.c_str());
+            mc.DisplayClientMessage("[%sAlas%s] %s%s is not in friends list!", DARK_PURPLE, WHITE, YELLOW, sanitizedPlayerName.c_str());
         }
     }
     else if (subCommand == "show" || subCommand == "s") {
-        mc.DisplayClientMessage("[%sMelody%s] %sFriends List:", DARK_PURPLE, WHITE, GREEN);
+        mc.DisplayClientMessage("[%sAlas%s] %sFriends List:", DARK_PURPLE, WHITE, GREEN);
         for (const auto& friendName : TargetUtils::Friend) {
             mc.DisplayClientMessage(friendName.c_str());
         }
     }
     else if (subCommand == "clear" || subCommand == "c") {
         TargetUtils::Friend.clear();
-        mc.DisplayClientMessage("[%sMelody%s] %sFriends list cleared!", DARK_PURPLE, WHITE, GREEN);
+        mc.DisplayClientMessage("[%sAlas%s] %sFriends list cleared!", DARK_PURPLE, WHITE, GREEN);
     }
     else {
-        mc.DisplayClientMessage("[%sMelody%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
+        mc.DisplayClientMessage("[%sAlas%s] %sInvalid command!", DARK_PURPLE, WHITE, RED);
     }
 }

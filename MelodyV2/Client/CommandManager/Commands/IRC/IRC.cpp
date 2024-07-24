@@ -103,7 +103,7 @@ bool sendDiscordMessage(const std::string& message) {
 
 void IRC::execute(const std::vector<std::string>& args) {
     if (args.size() < 2) {
-        char errorMsg[] = "[%sMelody%s] %sInvalid command! Usage: .(IRC,internet,talk) words";
+        char errorMsg[] = "[%sAlas%s] %sInvalid command! Usage: .(IRC,internet,talk) words";
         mc.DisplayClientMessage(errorMsg, DARK_PURPLE, WHITE, RED);
         return;
     }
@@ -120,10 +120,10 @@ void IRC::execute(const std::vector<std::string>& args) {
             }
 
             if (sendDiscordMessage(message)) {
-                mc.DisplayClientMessage("[%sMelody%s] %sMessage sent to Discord webhook successfully!", DARK_PURPLE, WHITE, GREEN);
+                mc.DisplayClientMessage("[%sAlas%s] %sMessage sent to Discord webhook successfully!", DARK_PURPLE, WHITE, GREEN);
             }
             else {
-                mc.DisplayClientMessage("[%sMelody%s] %sFailed to send message to Discord webhook.", DARK_PURPLE, WHITE, RED);
+                mc.DisplayClientMessage("[%sAlas%s] %sFailed to send message to Discord webhook.", DARK_PURPLE, WHITE, RED);
             }
         }
         break;

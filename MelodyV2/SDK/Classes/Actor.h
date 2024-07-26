@@ -83,6 +83,17 @@ public:
 		return func(this);
 	}
 
+	float getHealth() {
+		using func_t = float(__thiscall*)(Actor*);
+		static func_t func = (func_t)findSig(Sigs::actor::getHealth);
+		return func(this);
+	}
+	bool isInWater() {
+		using func_t = bool(__thiscall*)(Actor*);
+		static func_t func = (func_t)findSig(Sigs::actor::isInWater);
+		return func(this);
+	}
+
 	class ItemStack* getOffhandSlot() {
 		return (class ItemStack*)(*(__int64(__fastcall**)(uintptr_t, __int64))(**((uintptr_t**)this + 0x8B) + 40i64))(*((uintptr_t*)this + 0x8B), 1i64);
 	}
@@ -114,6 +125,7 @@ public:
 		static func_t func = (func_t)findSig(Sigs::actor::setonground);
 		return func(a, onground);
 	}
+
 	Vec2<float>* getRotationPrev() {
 		Vec2<float>* v1 = getRotation();
 		return (Vec2<float>*)(v1 + 0x8);

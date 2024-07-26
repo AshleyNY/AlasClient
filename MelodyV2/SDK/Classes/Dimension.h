@@ -1,7 +1,12 @@
 #pragma once
 #include <string>
 #include "BlockSource.h"
-
+class Weather {
+public:
+	bool isRaining() {
+	return *((float*)this + 14) > 0.2;
+}
+};
 class Dimension {
 public:
 	BUILD_ACCESS(this, BlockSource*, blockSource, 0xD0);

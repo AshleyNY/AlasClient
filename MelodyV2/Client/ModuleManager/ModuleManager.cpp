@@ -41,6 +41,7 @@ ModuleManager::ModuleManager() {
 		moduleList.push_back(new ESP());
 		moduleList.push_back(new AutoEmote());
 		moduleList.push_back(new CustomSky());
+		moduleList.push_back(new CrystalCham());
 		//Movement
 		moduleList.push_back(new AutoSprint());
 		moduleList.push_back(new Speed());

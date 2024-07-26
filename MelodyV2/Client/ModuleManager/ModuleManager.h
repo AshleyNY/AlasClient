@@ -40,6 +40,7 @@
 #include "Modules/Render/ESP.h"
 #include "Modules/Render/AutoEmote.h"
 #include "Modules/Render/CustomSky.h"
+#include "Modules/Render/CrystalCham.h"
 
 
 

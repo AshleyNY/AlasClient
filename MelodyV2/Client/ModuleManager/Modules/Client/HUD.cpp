@@ -86,6 +86,8 @@ void HUD::onImGuiRender(ImDrawList* drawlist) {
 	if (localPlayer == nullptr) return;
 	if (!mc.canUseMoveKeys()) return;
 
+
+
 	static ArrayList* arrayMod = (ArrayList*)client->moduleMgr->getModule("ArrayList");
 	static AutoCrystal* AutoCrystalMod = (AutoCrystal*)client->moduleMgr->getModule("AutoCrystal");
 	ImGuiIO& io = ImGui::GetIO();
@@ -105,6 +107,7 @@ void HUD::onImGuiRender(ImDrawList* drawlist) {
 
 	static UIColor whiteColor = UIColor(255, 255, 255, 255);
 	static UIColor semiGrayColor = UIColor(200, 200, 200, 255);
+
 
 	if (showCoords) {
 		ImGuiUtils::drawText(Vec2<float>(xOffset, yOffset), "XYZ ", whiteColor, size);

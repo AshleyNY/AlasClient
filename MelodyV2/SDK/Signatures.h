@@ -46,6 +46,9 @@ namespace Sigs {
         extern const hat::signature_view isonground;
         extern const hat::signature_view setonground;
         extern const hat::signature_view getNameTag;
+        extern const hat::signature_view getHealth;
+        extern const hat::signature_view isInWater;
+        //extern const hat::signature_view isInRain;
     }
     namespace player {
         extern const hat::signature_view getDestroyProgress;

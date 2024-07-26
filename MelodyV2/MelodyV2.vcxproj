@@ -255,6 +255,7 @@
     <ClCompile Include="Client\ModuleManager\Modules\Player\Swing.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Render\CameraNoClip.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Render\ConicalHat.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Render\CrystalCham.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Render\CustomFov.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Render\ESP.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Render\Fullbright.cpp" />
@@ -384,6 +385,7 @@
     <ClInclude Include="Client\ModuleManager\Modules\Player\Surround.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Player\Swing.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Render\ConicalHat.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Render\CrystalCham.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Render\CustomFov.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Render\ESP.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Render\CustomSky.h" />

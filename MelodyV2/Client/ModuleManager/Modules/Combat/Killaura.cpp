@@ -7,7 +7,7 @@ Killaura::Killaura() : Module("Killaura", "Auto attack players / mobs arround u.
 	addSlider<float>("MinSRange", "Min Strafe Range", ValueType::FLOAT_T, &MinSrange, 0.f, 10.f);
 	addEnumSetting("Mode", "NULL", { "Single", "Multi" }, &Mode);
 	addEnumSetting("Rotation", "NULL", { "None", "Silent" ,"Strafe"}, &rotMode);
-	addEnumSetting("Switch", "NULL", { "Key", "Full", "Silent" }, &switchMode);
+	addEnumSetting("Switch", "NULL", { "None", "Weather", "WeatherSilent" }, &switchMode);
 	addBoolCheck("Attack Mob", "If u want attack mob or not", &attackMob);
 	addBoolCheck("Hurttime check", "NULL", &hurttime);
 	addBoolCheck("KeyContrl", "Up or Down to change package,left or right to change weapon", &keyAddPack);
@@ -23,8 +23,21 @@ Killaura::Killaura() : Module("Killaura", "Auto attack players / mobs arround u.
 	addColorPicker("TV Color", "NULL", &visualizeColor);
 }
 
+/*
+			/*
+			* here some step that you can get pick and things
+			* item->getItemPtr()->hasRecipeTag("minecraft:digger") <- this is how you get like a things that can digs like shovel and picks and axe maybe
+			* if (item->hasRecipeTag("minecraft:is_sword"))
+			* item->hasRecipeTag("minecraft:is_pickaxe") <- get pickaxe
+			* item->hasRecipeTag("minecraft:is_axe") <- get axe
+			* item->hasRecipeTag("minecraft:is_shovel") <- get some shovel
+			* item->hasRecipeTag("minecraft:is_hoe")<- get hoe like a riel bitch
+			* item->hasRecipeTag("minecraft:is_food") <- get food
+			*/
 int Killaura::getBestWeaponSlot() {
 	auto localPlayer = mc.getLocalPlayer();
+	//float health = mc.getLocalPlayer()->getHealth();
+	bool isInWater = mc.getLocalPlayer()->isInWater();
 	if (!localPlayer)
 		return -1;
 
@@ -42,20 +55,15 @@ int Killaura::getBestWeaponSlot() {
 	for (int i = 0; i < 9; i++) {
 		auto itemStack = inv->getItemStack(i);
 		if (itemStack && itemStack->isValid()) { // or you can do itemStack->getItemPtr()->hasRecipeTag("minecraft:is_sword") for sword find only 
-			/*
-			* here some step that you can get pick and things 
-			* item->getItemPtr()->hasRecipeTag("minecraft:digger") <- this is how you get like a things that can digs like shovel and picks and axe maybe
-			* if (item->hasRecipeTag("minecraft:is_sword"))
-			* item->hasRecipeTag("minecraft:is_pickaxe") <- get pickaxe
-			* item->hasRecipeTag("minecraft:is_axe") <- get axe
-			* item->hasRecipeTag("minecraft:is_shovel") <- get some shovel
-			* item->hasRecipeTag("minecraft:is_hoe")<- get hoe like a riel bitch
-			* item->hasRecipeTag("minecraft:is_food") <- get food
-			*/
-			float currentDamage = itemStack->getItemPtr()->getAttackDamage() + (1.25f * itemStack->getEnchantLevel(EnchantID::sharpness));
-			if (currentDamage > damage) {
-				damage = currentDamage;
-				slot = i;
+			if (isInWater) {
+				if (itemStack->getItemPtr()->itemId == 554) {
+					slot = i;
+				}
+			}
+			else {
+				if (itemStack->getItemPtr()->itemId == 319) {
+					slot = i;
+				}
 			}
 		}
 	}

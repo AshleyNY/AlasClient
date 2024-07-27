@@ -23,6 +23,7 @@ ModuleManager::ModuleManager() {
 		//Misc
 		moduleList.push_back(new NoPacket());
 		moduleList.push_back(new Timer()); 
+		moduleList.push_back(new TestModule());
 		moduleList.push_back(new Disabler());
 		moduleList.push_back(new AntiCrystal());
 		moduleList.push_back(new AntiInvis());

@@ -27,6 +27,7 @@
 #include "Modules/Misc/AntiInvis.h"
 #include "Modules/Misc/InventoryCleaner.h"
 #include "Modules/Misc/AutoTools.h"
+#include "Modules/Misc/TestModule.h"
 //Render
 #include "Modules/Render/CameraNoClip.h"
 #include "Modules/Render/ConicalHat.h"

@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <MinHook.h>
-#include <Psapi.h>
 #include "../SDK/Signatures.h"
 #include "Utils.h"
 

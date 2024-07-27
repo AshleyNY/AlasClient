@@ -1,3 +1,6 @@
+//
+// Created by Flash on 7/19/2023.
+//
 
 #pragma once
 
@@ -6,7 +9,7 @@
 #include <tchar.h>
 #include <fstream>
 
-class NetSystem {
+class Internet {
 public:
     static std::string Get(std::string url);
     static void Post(const std::string& url, const std::string& jsonData);
@@ -18,5 +21,7 @@ public:
     static std::string GetHiveStats(const std::string& gamemode, const std::string& gamertag);
     static int64_t GetFirstPlayed(const std::string& gamemode, const std::string& gamertag);
     static bool IsPlayerNicked(const std::string& playa);
-   
-}; 
+
+    // nice killswitch frfr.
+    //#define Killswitch() (Internet::Get(xorstr_("https://raw.githubusercontent.com/Alas-Client/Releases/main/latest.txt")).empty() ? true : Internet::Get(xorstr_("https://raw.githubusercontent.com/Alas-Client/Releases/main/latest.txt")) == xorstr_("false"))
+};

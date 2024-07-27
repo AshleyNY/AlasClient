@@ -32,12 +32,14 @@ static int Swap(int n) {
 	}
 	return slot;
 }
+
 static int getBlockID(Vec3<float> pos) {
 	int id = 0;
 	Block* block = mc.getLocalPlayer()->dimension->blockSource->getBlock(pos.toInt());
 	id = block->blockLegacy->blockId;
 	return id;
 }
+
 static void predictBlock(Vec3<float> pos) {
 	GameMode* gm = mc.getGameMode();
 	static std::vector<Vec3<float>> blocks;

@@ -5,7 +5,6 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <Psapi.h>
 std::vector<std::string> FileSystem::GetAllFilesInDir(const std::string& path) {
     std::vector<std::string> files;
     for (const auto& entry : std::filesystem::directory_iterator(path)) {
@@ -16,7 +15,7 @@ std::vector<std::string> FileSystem::GetAllFilesInDir(const std::string& path) {
 
 std::string FileSystem::GetPraxDirectory() {
     std::string path = getenv("APPDATA");
-    path += "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\Prax\\";
+    path += "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\Alas\\";
     return path;
 }
 

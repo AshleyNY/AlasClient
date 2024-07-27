@@ -96,12 +96,13 @@ void GetTrident() {
 		}
 	}
 }
-Vec2<float> GetRotations(Vec3<float> playerEyePos, Vec3<float> targetPos) {
+static Vec2<float> GetRotations(Vec3<float> playerEyePos, Vec3<float> targetPos) {
 	Vec3<float> delta = targetPos.sub(playerEyePos);
 	float yaw = atan2(delta.z, delta.x) * 180.0f / M_PI;
 	float pitch = atan2(delta.y, std::sqrt(delta.x * delta.x + delta.z * delta.z)) * 180.0f / M_PI;
 	return { -pitch, yaw - 90 };
 }
+
 void Killaura::onNormalTick(Actor* actor) {
 	auto localPlayer = mc.getLocalPlayer();
 	auto plrInv = localPlayer->getPlayerInventory();

@@ -14,12 +14,14 @@ public:
 		INTERNAL = 0,
 		EXTERNAL = 1,
 	};
+
 	static inline MinecraftUIRenderContext* renderCtx = nullptr;
 	static inline ScreenContext* screenContext2D = nullptr;
 	static inline ScreenContext* screenContext3D = nullptr;
 	static inline Tessellator* Tessellator2D = nullptr;
 	static inline float* colorHolder = nullptr;
 	static inline FontBitmap* mcFont = nullptr;
+	static inline MaterialPtr* entityFlatStaticMaterial = nullptr;
 	static inline MaterialPtr* uiMaterial = nullptr;
 	static inline MaterialPtr* blendMaterial = nullptr;
 	static inline float deltaTime = 0.016f;
@@ -37,8 +39,15 @@ public:
 	static void drawQuad(const Vec2<float>& p1, const Vec2<float>& p2, const Vec2<float>& p3, const Vec2<float>& p4);
 	static void Flush();
 	static void drawLine2D(const Vec2<float>& start, const Vec2<float>& end, const MC_Color& color, float lineWidth = 1.f);
+	static void drawCrystalCham(const Vec3<float>& entPos);
 	static void drawBox(const AABB& blockAABB, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline);
 	static void drawBox(const Vec3<float>& blockPos, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline);
+	static void drawBoxCustom(const Vec3<float>& blockPos, float size, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline);
+	static void drawMoveBox(const Vec3<float>& blockPos, float x, float y, float z, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline);
+	static std::vector<Vec3<float>> getBoxCorners3D(Vec3<float> lower, Vec3<float> upper);
+	static void rotateBoxCorners3D(std::vector<Vec3<float>>& vertices, Vec3<float> rotationPoint, Vec3<float> angles);
+	static void translateBox3D(std::vector<Vec3<float>>& vertices, Vec3<float> shift);
+	static void drawRawBox3D(std::vector<Vec3<float>> vertices, bool outline, bool onUi);
 	static bool DrawAABB(const AABB& aabb, ImU32 espCol, float thickness = 2.0f);
 	static bool DrawBlock(Vec3<int>& blockPos, ImU32 color, float thickness = 2.0f);
 	static bool worldToScreen(const Vec3<float>& worldPos, Vec2<float>& screenPos);

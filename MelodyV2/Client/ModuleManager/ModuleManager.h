@@ -16,7 +16,7 @@
 #include "Modules/Combat/AutoAnvil.h"
 #include "Modules/Combat/AutoTntSpammer.h"
 #include "Modules/Combat/AnchorAura.h"
-#include "Modules/Combat/AnchorNeo.h"
+#include "Modules/Combat/AnchorAuraNeo.h"
 #include "Modules/Combat/PopCounter.h"
 #include "Modules/Combat/AutoTrap.h"
 //Misc

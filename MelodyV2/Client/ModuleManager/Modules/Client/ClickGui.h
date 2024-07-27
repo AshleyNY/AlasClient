@@ -31,6 +31,11 @@ struct ClickWindow {
 
 class ClickGui : public Module {
 private:
+	UIColor ZitiColor = UIColor(255, 255, 255, 255);
+	UIColor CBGColor = UIColor(24, 24, 24, 200);
+	UIColor MBGColor = UIColor(24, 24, 24, 200);
+
+	int opicity = 255;
 	std::vector<ClickWindow*> windowList;
 	bool isLeftClickDown = false;
 	bool isRightClickDown = false;
@@ -50,7 +55,9 @@ private:
 	int lastKeyPress = -1;
 	bool* isChoosingKeyBindPtr = nullptr;
 public:
-	int Mode = 1;
+	bool particles = true;
+	int Pmode = 0;
+	int Mode = 0;
 	float blurStrength = 7.5f;
 	ClickGui();
 	~ClickGui();

@@ -1,6 +1,7 @@
 #include "RenderUtils.h"
 #include "../SDK/GameData.h"
 #include <glm/ext/matrix_transform.hpp>
+Vec3<float> origin;//static MaterialPtr* entityFlatStaticMaterial = nullptr;
 
 void RenderUtils::SetUp(ScreenView* screenView, MinecraftUIRenderContext* ctx) {
 	//if (!init) {
@@ -10,6 +11,7 @@ void RenderUtils::SetUp(ScreenView* screenView, MinecraftUIRenderContext* ctx) {
 		colorHolder = screenContext2D->getColorHolder();
 		if (uiMaterial == nullptr) uiMaterial = MaterialPtr::createMaterial(HashedString("ui_textured_and_glcolor"));
 		if (blendMaterial == nullptr) blendMaterial = MaterialPtr::createMaterial(HashedString("fullscreen_cube_overlay_blend"));
+		if (entityFlatStaticMaterial == nullptr) entityFlatStaticMaterial = MaterialPtr::createMaterial(HashedString("selection_overlay"));
 		mcFont = ctx->clientInstance->minecraftGame->mcFont;
 		init = true;
 	//}
@@ -132,7 +134,18 @@ void RenderUtils::drawLine2D(const Vec2<float>& start, const Vec2<float>& end, c
 
 	Tessellator2D->renderMeshImmediately(screenContext2D, uiMaterial);
 }
-
+void RenderUtils::drawCrystalCham(const Vec3<float>& entPos) {
+	Vec3<float> CrystalPos = entPos;
+	Vec2<float> screen;
+	Vec3<float> origin = mc.getClientInstance()->getLevelRenderer()->levelRendererPlayer->cameraPos1;
+	Vec2<float> fov = mc.getClientInstance()->getFov();
+	Vec2<float> screenSize = mc.getClientInstance()->guiData->windowSize;
+	Vec2<float> fill1 = RenderUtils::worldToScreen(CrystalPos.add(0.5,0,0), screen);
+	Vec2<float> fill2 = RenderUtils::worldToScreen(CrystalPos.add(-0.5, 0, 0), screen);
+	Vec2<float> fill3 = RenderUtils::worldToScreen(CrystalPos.add(0, 0, 0.5), screen);
+	Vec2<float> fill4 = RenderUtils::worldToScreen(CrystalPos.add(0, 0, -0.5), screen);
+	drawQuad(fill1, fill2, fill3, fill4);
+}
 void RenderUtils::drawBox(const AABB& blockAABB, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline) {
 	if (mc.getClientInstance()->getLevelRenderer() == nullptr) return;
 
@@ -300,6 +313,23 @@ void RenderUtils::drawBox(const Vec3<float>& blockPos, UIColor color, UIColor li
 	blockAABB.upper.z = blockPos.z + 1.f;
 	RenderUtils::drawBox(blockAABB, color, lineColor, lineWidth, fill, outline);
 }
+void RenderUtils::drawBoxCustom(const Vec3<float>& blockPos,float size, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline) {
+	AABB blockAABB;
+	blockAABB.lower = blockPos;
+	blockAABB.upper.x = blockPos.x + size;
+	blockAABB.upper.y = blockPos.y + size;
+	blockAABB.upper.z = blockPos.z + size;
+	RenderUtils::drawBox(blockAABB, color, lineColor, lineWidth, fill, outline);
+}
+void RenderUtils::drawMoveBox(const Vec3<float>& blockPos, float x, float y, float z, UIColor color, UIColor lineColor, float lineWidth, bool fill, bool outline) {
+	AABB blockAABB;
+	blockAABB.lower = blockPos;
+	blockAABB.upper.x = blockPos.x + x;
+	blockAABB.upper.y = blockPos.y + y;
+	blockAABB.upper.z = blockPos.z + z;
+	RenderUtils::drawBox(blockAABB, color, lineColor, lineWidth, fill, outline);
+}
+
 bool RenderUtils::DrawAABB(const AABB& aabb, ImU32 espCol, float thickness) {
 	ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 	std::shared_ptr<glmatrixf> refdef = std::shared_ptr<glmatrixf>(mc.getClientInstance()->getbadrefdef()->correct());
@@ -359,3 +389,84 @@ bool RenderUtils::worldToScreen(const Vec3<float>& worldPos, Vec2<float>& screen
 	return refdef->OWorldToScreen(mc.getClientInstance()->getLevelRenderer()->levelRendererPlayer->cameraPos1, worldPos, screenPos, fov, screenSize);
 }
 
+//kek stuff:
+std::vector<Vec3<float>> RenderUtils::getBoxCorners3D(Vec3<float> lower, Vec3<float> upper) {
+	Vec3<float> diff = upper;
+	diff.x = diff.x - lower.x;
+	diff.y = diff.y - lower.y;
+	diff.z = diff.z - lower.z;
+
+	Vec3<float> newLower = lower;
+	newLower.x = newLower.x - origin.x;
+	newLower.y = newLower.y - origin.y;
+	newLower.z = newLower.z - origin.z;
+
+	return {
+		{newLower.x, newLower.y, newLower.z},
+		{newLower.x + diff.x, newLower.y, newLower.z},
+		{newLower.x, newLower.y, newLower.z + diff.z},
+		{newLower.x + diff.x, newLower.y, newLower.z + diff.z},
+
+		{newLower.x, newLower.y + diff.y, newLower.z},
+		{newLower.x + diff.x, newLower.y + diff.y, newLower.z},
+		{newLower.x, newLower.y + diff.y, newLower.z + diff.z},
+		{newLower.x + diff.x, newLower.y + diff.y, newLower.z + diff.z}
+	};
+}
+void RenderUtils::rotateBoxCorners3D(std::vector<Vec3<float>>& vertices, Vec3<float> rotationPoint, Vec3<float> angles) {
+	rotationPoint = rotationPoint.sub(origin);
+	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.f), glm::radians(angles.x), glm::vec3(1.f, 0.f, 0.f));  // create rotation matrix around the axis
+	for (int i = 0; i < 8; i++) {
+		glm::vec4 rotatedVertex = rotationMatrix * glm::vec4(vertices[i].x - rotationPoint.x, vertices[i].y - rotationPoint.y, vertices[i].z - rotationPoint.z, 0.0f);
+		vertices[i] = Vec3{ rotatedVertex.x + rotationPoint.x, rotatedVertex.y + rotationPoint.y, rotatedVertex.z + rotationPoint.z };
+	}
+	rotationMatrix = glm::rotate(glm::mat4(1.f), glm::radians(angles.y), glm::vec3(0.f, 1.f, 0.f));  // create rotation matrix around the axis
+	for (int i = 0; i < 8; i++) {
+		glm::vec4 rotatedVertex = rotationMatrix * glm::vec4(vertices[i].x - rotationPoint.x, vertices[i].y - rotationPoint.y, vertices[i].z - rotationPoint.z, 0.0f);
+		vertices[i] = Vec3{ rotatedVertex.x + rotationPoint.x, rotatedVertex.y + rotationPoint.y, rotatedVertex.z + rotationPoint.z };
+	}
+	rotationMatrix = glm::rotate(glm::mat4(1.f), glm::radians(angles.z), glm::vec3(0.f, 0.f, 1.f));  // create rotation matrix around the axis
+	for (int i = 0; i < 8; i++) {
+		glm::vec4 rotatedVertex = rotationMatrix * glm::vec4(vertices[i].x - rotationPoint.x, vertices[i].y - rotationPoint.y, vertices[i].z - rotationPoint.z, 0.0f);
+		vertices[i] = Vec3{ rotatedVertex.x + rotationPoint.x, rotatedVertex.y + rotationPoint.y, rotatedVertex.z + rotationPoint.z };
+	}
+}
+void RenderUtils::translateBox3D(std::vector<Vec3<float>>& vertices, Vec3<float> shift) {
+	for (int i = 0; i < vertices.size(); i++) vertices[i].add(shift);
+}
+
+void RenderUtils::drawRawBox3D(std::vector<Vec3<float>> vertices, bool outline, bool onUi) {
+	auto myTess = RenderUtils::getTessellator3D();
+
+	if (RenderUtils::screenContext3D == nullptr) return;
+	myTess->begin(VertextFormat::QUAD);
+	static int v[48] = { 5, 7, 6, 4, 4, 6, 7, 5, 1, 3, 2, 0, 0, 2, 3, 1, 4, 5, 1, 0, 0, 1, 5, 4, 6, 7, 3, 2, 2, 3, 7, 6, 4, 6, 2, 0, 0, 2, 6, 4, 5, 7, 3, 1, 1, 3, 7, 5 };
+	for (int i = 0; i < 48; i++) RenderUtils::getTessellator3D()->vertex(vertices[v[i]].x, vertices[v[i]].y, vertices[v[i]].z);
+	myTess->renderMeshImmediately(RenderUtils::screenContext3D, onUi ? RenderUtils::uiMaterial : RenderUtils::entityFlatStaticMaterial);
+	if (!outline) return;
+	myTess->begin(VertextFormat::LINE_LIST);
+#define line(m, n)                 \
+	myTess->vertex(m.x, m.y, m.z); \
+	myTess->vertex(n.x, n.y, n.z);
+
+	// Top square
+	line(vertices[4], vertices[5]);
+	line(vertices[5], vertices[7]);
+	line(vertices[7], vertices[6]);
+	line(vertices[6], vertices[4]);
+
+	// Bottom Square
+	line(vertices[0], vertices[1]);
+	line(vertices[1], vertices[3]);
+	line(vertices[3], vertices[2]);
+	line(vertices[2], vertices[0]);
+
+	// Sides
+	line(vertices[0], vertices[4]);
+	line(vertices[1], vertices[5]);
+	line(vertices[2], vertices[6]);
+	line(vertices[3], vertices[7]);
+
+#undef line
+	myTess->renderMeshImmediately(RenderUtils::screenContext3D, onUi ? RenderUtils::uiMaterial : RenderUtils::entityFlatStaticMaterial);
+}

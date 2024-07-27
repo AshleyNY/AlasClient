@@ -3,23 +3,21 @@
 #include "../../ModuleManager.h"
 #include "../Module.h"
 
-class AnchorNeo : public Module {
+class AnchorAuraNeo : public Module {
 private:
-	int Neorange = 3;
-	bool silent = false;
+	bool airplace = false;
+	bool geyser = false;
 	std::string names;
-	bool shit = false;
+	int range = 7;
+
 	//ground level  ~~~ funni initializations
-	Vec3<float> bottom1;
-	//middle level  ~ last priority because it is the least effective
+	bool start = false;
+	Vec3<float> top;
+	Vec3<float> placepos;
 	Vec2<float> rotAnglePlace{};
 public:
-	AnchorNeo();
-	~AnchorNeo();
-
-
-
-	int range = 10;
+	AnchorAuraNeo();
+	~AnchorAuraNeo();
 	// Inherited via IModule
 	//void charge2(C_GameMode* gm, Vec3<float>* pos);
 	virtual void onNormalTick(Actor* actor) override;

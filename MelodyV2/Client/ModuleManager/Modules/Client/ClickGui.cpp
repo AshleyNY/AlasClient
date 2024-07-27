@@ -13,8 +13,14 @@ void getModuleListByCategory(Category category, std::vector<Module*>& modList) {
 
 ClickGui::ClickGui() : Module("ClickGui", "A GUI use to enable/disable modules.", Category::CLIENT, VK_INSERT) {
 	addEnumSetting("Mode", "NULL", { "New", "Old" }, &Mode);
-	addSlider<float>("Blur", "NULL", ValueType::FLOAT_T, &blurStrength, 0.f, 20.f);
+	addEnumSetting("ParticlesSort", "NULL", { "Snow", "Rain","Ash"}, &Pmode);
+	addSlider<float>("Blur", "NULL", ValueType::FLOAT_T, &blurStrength, 0.f, 20.f);//opicity
+	addBoolCheck("Particles", "do snow.", &particles);
 	addBoolCheck("Tooltips", "Show modules/settings tooltips.", &tooltips);
+	addSlider<int>("opicity", "NULL", ValueType::INT_T, &opicity, 0,255);
+	addColorPicker("WordColor", "NULL", &ZitiColor);
+	addColorPicker("ModuleColor", "NULL", &MBGColor);
+	addColorPicker("CateColor", "NULL", &CBGColor);
 }
 
 ClickGui::~ClickGui() {
@@ -117,7 +123,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 	float roundValue = (Mode == 0) ? 0.0f : 4.f;
 
 	static const UIColor whiteColor(255, 255, 255, 255);
-	static const UIColor semiGrayColor(200, 200, 200, 255);
+	//static const UIColor ZitiColor(200, 200, 200, 255);
 	static const UIColor selectedColor(255, 255, 255, 15);
 
 	UIColor mainColor(colorsMod->getColor());
@@ -154,9 +160,9 @@ void ClickGui::render(ImDrawList* drawlist) {
 				window->pos.y - textPadding,
 				window->pos.x + windowWidth + textPadding,
 				window->pos.y + textHeight + textPadding);
-			static const UIColor cbgColor(29, 29, 29, 255);
-			ImGuiUtils::fillRectangle(cRectPos, cbgColor, roundValue, ImDrawFlags_RoundCornersTop);
-			ImGuiUtils::fillRectangle(Vec4<float>(cRectPos.x, cRectPos.w - textPadding * 3.f, cRectPos.z, cRectPos.w), cbgColor);
+			//static const UIColor CBGColor(29, 29, 29, 255);
+			ImGuiUtils::fillRectangle(cRectPos, CBGColor, roundValue, ImDrawFlags_RoundCornersTop);
+			ImGuiUtils::fillRectangle(Vec4<float>(cRectPos.x, cRectPos.w - textPadding * 3.f, cRectPos.z, cRectPos.w), CBGColor);
 			ImGuiUtils::fillRectangle(Vec4<float>(cRectPos.x, cRectPos.w - textPadding * 2.f, cRectPos.z, cRectPos.w), UIColor(36, 36, 36, 255));
 
 			float WtextWidth = ImGuiUtils::getTextWidth(window->windowName, textSize * 1.1f);
@@ -204,8 +210,8 @@ void ClickGui::render(ImDrawList* drawlist) {
 
 					Vec4<float> mRectPos = { xOffset, yOffset, xEnd, yOffset + textHeight + textPadding * 2.f };
 					Vec4<float> mRectPos2 = { mRectPos.x + 1.f, mRectPos.y + 1.f, mRectPos.z - 1.f, mRectPos.w - 1.f };
-					static const UIColor mbgColor = UIColor(21, 21, 21, 255);
-					ImGuiUtils::fillRectangle(mRectPos, mbgColor);
+					//static const UIColor MBGColor = UIColor(21, 21, 21, 255);
+					ImGuiUtils::fillRectangle(mRectPos, MBGColor);
 
 					if (mod->isEnabled()) {
 						if (Mode == 0) {
@@ -229,7 +235,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 					ImGuiUtils::drawText(
 						mTextPos,
 						mod->getModuleName(),
-						(mod->isEnabled() || mRectPos2.contains(mousePos)) ? whiteColor : semiGrayColor,
+						(mod->isEnabled() || mRectPos2.contains(mousePos)) ? whiteColor : ZitiColor,
 						textSize,
 						true
 					);
@@ -269,7 +275,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 							Vec4<float> sbgRectPos = Vec4<float>(mRectPos.x, yOffset, mRectPos.z, yOffset + textHeight + textPadding * 2.f);
 							Vec4<float> sRectPos = Vec4<float>(sbgRectPos.x + textPadding * 5.f, sbgRectPos.y, sbgRectPos.z - textPadding * 5.f, sbgRectPos.w - textPadding);
 							Vec2<float> sTextPos = Vec2<float>(sRectPos.x + textPadding * 4.f, sRectPos.y + textPadding);
-							ImGuiUtils::fillRectangle(sbgRectPos, mbgColor);
+							ImGuiUtils::fillRectangle(sbgRectPos, MBGColor);
 							if (sRectPos.contains(mousePos)) tooltipString = setting->description;
 
 							switch (setting->settingType) {
@@ -330,7 +336,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 									if (Mode == 0) drawlist->AddRectFilledMultiColor(ImVec2(sRectPos.x, sRectPos.y), ImVec2(sRectPos.z, sRectPos.w), mainColor.toImColor(), ImColor(0, 0, 0, 0), ImColor(0, 0, 0, 0), mainColor.toImColor());
 									else ImGuiUtils::fillRectangle(sRectPos, sColor, roundValue);
 								}
-								ImGuiUtils::drawText(sTextPos, setting->settingName, (setting->valuePtr->_bool || sRectPos.contains(mousePos)) ? whiteColor : semiGrayColor, textSize, true);
+								ImGuiUtils::drawText(sTextPos, setting->settingName, (setting->valuePtr->_bool || sRectPos.contains(mousePos)) ? whiteColor : ZitiColor, textSize, true);
 								if (sRectPos.contains(mousePos)) {
 									ImGuiUtils::fillRectangle(sRectPos, selectedColor, roundValue);
 									if (isLeftClickDown) {
@@ -380,7 +386,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 
 								if (setting->extended) {
 									Vec4<float> pickerPos(sbgRectPos.x, sbgRectPos.w, sbgRectPos.z, sbgRectPos.w + (textHeight + textPadding * 2.f) * 4.f);
-									ImGuiUtils::fillRectangle(pickerPos, mbgColor);
+									ImGuiUtils::fillRectangle(pickerPos, MBGColor);
 									static const Vec2<float> colorPickerSize = Vec2<float>(136.f, 100.f);
 									Vec4<float> colorPickerPos(pickerPos.x + 5.f, pickerPos.y + 5.f, pickerPos.x + 5.f + colorPickerSize.x, pickerPos.y + 5.f + colorPickerSize.y);
 									UIColor colorValue(*setting->colorPtr);
@@ -619,8 +625,8 @@ void ClickGui::render(ImDrawList* drawlist) {
 
 				if (window->scrolloffset > 0) window->scrolloffset = 0;
 			}
-			if (yOffset < window->pos.y + io.DisplaySize.y * 0.65f) ImGuiUtils::drawRectangle(Vec4<float>(cRectPos.x, cRectPos.y, cRectPos.z, yOffset), UIColor(36, 36, 36, 255), 2.f, roundValue, ImDrawFlags_RoundCornersTop);
-			else ImGuiUtils::drawRectangle(Vec4<float>(cRectPos.x, cRectPos.y, cRectPos.z, window->pos.y + io.DisplaySize.y * 0.65f), UIColor(36, 36, 36, 255), 2.f, roundValue, ImDrawFlags_RoundCornersTop);
+			if (yOffset < window->pos.y + io.DisplaySize.y * 0.65f) ImGuiUtils::drawRectangle(Vec4<float>(cRectPos.x, cRectPos.y, cRectPos.z, yOffset), MBGColor, 2.f, roundValue, ImDrawFlags_RoundCornersTop);
+			else ImGuiUtils::drawRectangle(Vec4<float>(cRectPos.x, cRectPos.y, cRectPos.z, window->pos.y + io.DisplaySize.y * 0.65f),MBGColor, 2.f, roundValue, ImDrawFlags_RoundCornersTop);
 		}
 	}
 
@@ -669,8 +675,8 @@ void ClickGui::render(ImDrawList* drawlist) {
 	}
 	roundValue = (Mode == 0) ? 0.0f : 7.5f;
 	Vec2<float> typeTextPos = Vec2<float>(typeRectPos.x + 5.f, typeRectPos.y + textPadding * 2.f);
-	ImGuiUtils::fillRectangle(searchRectPos, UIColor(29, 29, 29, 255), roundValue);
-	ImGuiUtils::fillRectangle(typeRectPos, UIColor(21, 21, 21, 255), roundValue);
+	ImGuiUtils::fillRectangle(searchRectPos, MBGColor, roundValue);
+	ImGuiUtils::fillRectangle(typeRectPos, MBGColor, roundValue);
 	ImGuiUtils::drawText(Vec2<float>(typeRectPos.z + 5.f, typeTextPos.y), SearchStr, whiteColor, textSize);
 
 	static float holdTimes = 0.f;
@@ -716,7 +722,7 @@ void ClickGui::render(ImDrawList* drawlist) {
 		}
 	}
 	UIColor barColor(255, 255, 255, (int)(barOpacity * 255.f));
-	if (isSearching) ImGuiUtils::fillRectangle(barRect, barColor);
-	if (!isSearching && searchingModule.empty()) ImGuiUtils::drawText(typeTextPos, "Search for Module :)", UIColor(125, 125, 125, 255), textSize, false);
+	if (isSearching) ImGuiUtils::fillRectangle(barRect, ZitiColor);
+	if (!isSearching && searchingModule.empty()) ImGuiUtils::drawText(typeTextPos, "Search for Module :)", ZitiColor, textSize, false);
 	lastKeyPress = -1;
 }

@@ -16,7 +16,7 @@ ModuleManager::ModuleManager() {
 		moduleList.push_back(new GravityAura());
 		moduleList.push_back(new AutoTntSpammer());
 		moduleList.push_back(new AnchorAura());
-		moduleList.push_back(new AnchorNeo());
+		moduleList.push_back(new AnchorAuraNeo());
 		moduleList.push_back(new PopCounter());
 		moduleList.push_back(new AutoTrap());
 		//moduleList.push_back(new AutoMine());

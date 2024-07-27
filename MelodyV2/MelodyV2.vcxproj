@@ -212,7 +212,7 @@
     <ClCompile Include="Client\ModuleManager\Modules\Client\HUD.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Client\Notifications.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AnchorAura.cpp" />
-    <ClCompile Include="Client\ModuleManager\Modules\Combat\AnchorNeo.cpp" />
+    <ClCompile Include="Client\ModuleManager\Modules\Combat\AnchorAuraNeo.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoCrystal.cpp" />
     <ClCompile Include="Client\ModuleManager\Modules\Combat\AutoMine.cpp" />
@@ -281,8 +281,12 @@
     <ClCompile Include="SDK\GameData.cpp" />
     <ClCompile Include="SDK\MCTextFormat.cpp" />
     <ClCompile Include="SDK\Signatures.cpp" />
+    <ClCompile Include="Utils\Audio.cpp" />
     <ClCompile Include="Utils\ImGuiUtils.cpp" />
+    <ClCompile Include="Utils\Misc.cpp" />
     <ClCompile Include="Utils\RenderUtils.cpp" />
+    <ClCompile Include="Utils\System\FileSystem.cpp" />
+    <ClCompile Include="Utils\System\NetSystem.cpp" />
     <ClCompile Include="Utils\TargetUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -343,7 +347,7 @@
     <ClInclude Include="Client\ModuleManager\Modules\Client\Clients.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Client\Notifications.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AnchorAura.h" />
-    <ClInclude Include="Client\ModuleManager\Modules\Combat\AnchorNeo.h" />
+    <ClInclude Include="Client\ModuleManager\Modules\Combat\AnchorAuraNeo.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoCrystal.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoTntSpammer.h" />
     <ClInclude Include="Client\ModuleManager\Modules\Combat\AutoMine.h" />
@@ -411,6 +415,8 @@
     <ClInclude Include="Libs\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Libs\ImGui\imstb_textedit.h" />
     <ClInclude Include="Libs\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Libs\ImGui\goldtext.hpp" />
+    <ClInclude Include="Libs\ImGui\particles.hpp" />
     <ClInclude Include="Libs\Json.hpp" />
     <ClInclude Include="Libs\Kiero\kiero.h" />
     <ClInclude Include="Libs\Libhat\libhat.hpp" />
@@ -505,7 +511,11 @@
     <ClInclude Include="SDK\GameData.h" />
     <ClInclude Include="SDK\MCTextFormat.h" />
     <ClInclude Include="SDK\Signatures.h" />
+    <ClInclude Include="Utils\Audio.h" />
     <ClInclude Include="Utils\ColorUtils.h" />
+    <ClInclude Include="Utils\Misc.h" />
+    <ClInclude Include="Utils\System\FileSystem.h" />
+    <ClInclude Include="Utils\System\NetSystem.h" />
     <ClInclude Include="Utils\TargetUtils.h" />
     <ClInclude Include="Utils\ImGuiUtils.h" />
     <ClInclude Include="Utils\Math.h" />

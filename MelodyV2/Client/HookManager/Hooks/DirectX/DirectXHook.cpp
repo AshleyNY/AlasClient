@@ -23,6 +23,7 @@
 #include "../../../Client.h"
 
 #include "../../../../Utils/ImGuiUtils.h"
+#include "../../../../Libs/ImGui/particles.hpp"
 
 void DirectXHook::Render(ImDrawList* drawlist) {
 	ImGuiUtils::setDrawList(drawlist);
@@ -95,7 +96,7 @@ __int64 DirectXHook::gameBgfxCallback(__int64 a1, __int64 a2, __int64 a3, __int6
 		static ID3D11Texture2D* pBackBuffer = nullptr;
 		static IDXGISurface* dxgiBackBuffer = nullptr;
 		static ID3D11RenderTargetView* mainRenderTargetView = nullptr;
-
+		static ClickGui* ClickMod = (ClickGui*)client->moduleMgr->getModule("ClickGui");
 		d3d11Device->GetImmediateContext(&ppContext);
 		pSwapChainRestore->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
 		pSwapChainRestore->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer));
@@ -122,6 +123,27 @@ __int64 DirectXHook::gameBgfxCallback(__int64 a1, __int64 a2, __int64 a3, __int6
 
 		ImGui::NewFrame();
 		Render(ImGui::GetBackgroundDrawList());
+		//bool menu_particle = true;
+
+		if (ClickMod->isEnabled() && ClickMod->particles) {
+
+			switch (ClickMod->Pmode) {
+			case 0: {
+				M::Particle.render(M_Particle_System::prt_type::snow);
+				break;
+			}
+			case 1: {
+				
+				M::Particle.render(M_Particle_System::prt_type::rain);
+				break;
+			}
+			case 2: {
+				M::Particle.render(M_Particle_System::prt_type::ash);
+				break;
+			}
+			}
+		}
+		ImGui::End();
 		ImGui::EndFrame();
 		ImGui::Render();
 

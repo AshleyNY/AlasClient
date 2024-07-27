@@ -6,7 +6,7 @@ class Colors : public Module {
 private:
 	UIColor mainColor = UIColor(155, 40, 245, 255);
 	UIColor secondaryColor = UIColor(51, 13, 81, 255);
-	int modeValue = 1;
+	int modeValue = 2;
 	float seconds = 3.f;
 	float saturation = 1.f;
 	float brightness = 1.f;
